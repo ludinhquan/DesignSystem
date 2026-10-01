@@ -142,6 +142,23 @@ void main() {
     },
   );
 
+  test(
+    'a 5xx on refresh keeps the session and reports a server error',
+    () async {
+      final server = FakeServer(
+        (r) async =>
+            json(r.path == AuthInterceptor.refreshPath ? 503 : 401, {}),
+      );
+      final dio = client(server);
+
+      await expectLater(
+        guardHttp(() => dio.get<void>('/me')),
+        throwsA(isA<ServerException>()),
+      );
+      expect(expired, 0);
+    },
+  );
+
   group('AppException.fromDio', () {
     Future<AppException> failWith(ResponseBody Function() reply) async {
       final dio = client(FakeServer((_) async => reply()));

@@ -136,6 +136,10 @@ final sessionExpiryProvider = Provider<SessionExpiry>((ref) {
 /// Concurrent 401s share one refresh (the [_refreshing] future is the lock).
 /// A request that was sent with an old token while another request refreshed
 /// is replayed without a second refresh.
+///
+/// Only a refresh the server *rejects* (4xx) logs out. If the refresh cannot
+/// reach the server or gets a 5xx, the session is kept and the request fails
+/// with that error (`NetworkException` / `ServerException`).
 class AuthInterceptor extends Interceptor {
   AuthInterceptor({
     required this._dio,
@@ -155,7 +159,7 @@ class AuthInterceptor extends Interceptor {
   final TokenStore _tokens;
   final void Function() _onSessionExpired;
 
-  Future<_RefreshResult>? _refreshing;
+  Future<_Refresh>? _refreshing;
 
   @override
   Future<void> onRequest(
@@ -185,19 +189,19 @@ class AuthInterceptor extends Interceptor {
     final sentWithOldToken =
         current != null && options.headers['Authorization'] != _bearer(current);
     final result = sentWithOldToken
-        ? _RefreshResult.ok
+        ? const _Refreshed()
         : await (_refreshing ??= _refresh().whenComplete(
             () => _refreshing = null,
           ));
 
     switch (result) {
-      case _RefreshResult.rejected:
+      case _Rejected():
         _onSessionExpired();
-        return handler.next(err);
-      case _RefreshResult.unreachable:
-        // Keep the session: the user is offline, not logged out.
-        return handler.next(err.copyWith(error: const NetworkException()));
-      case _RefreshResult.ok:
+        handler.next(err);
+      case _Failed(:final error):
+        // Keep the session: the server is unreachable, not refusing the user.
+        handler.next(err.copyWith(error: error));
+      case _Refreshed():
         try {
           options.extra[_replayed] = true;
           handler.resolve(await _dio.fetch<Object?>(options));
@@ -207,9 +211,9 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Future<_RefreshResult> _refresh() async {
+  Future<_Refresh> _refresh() async {
     final tokens = await _tokens.read();
-    if (tokens == null) return _RefreshResult.rejected;
+    if (tokens == null) return const _Rejected();
     try {
       final res = await _refreshDio.post<Map<String, Object?>>(
         refreshPath,
@@ -219,21 +223,43 @@ class AuthInterceptor extends Interceptor {
       switch (res.data) {
         case {'access_token': final String a, 'refresh_token': final String r}:
           await _tokens.write(AuthTokens(access: a, refresh: r));
-          return _RefreshResult.ok;
+          return const _Refreshed();
         default:
-          return _RefreshResult.rejected;
+          return const _Rejected();
       }
     } on DioException catch (e) {
-      return e.type == DioExceptionType.badResponse
-          ? _RefreshResult.rejected
-          : _RefreshResult.unreachable;
+      return switch (AppException.fromDio(e)) {
+        final error && (NetworkException() || ServerException()) => _Failed(
+          error,
+        ),
+        _ => const _Rejected(),
+      };
     }
   }
 
   static String _bearer(AuthTokens tokens) => 'Bearer ${tokens.access}';
 }
 
-enum _RefreshResult { ok, rejected, unreachable }
+/// Outcome of one token refresh.
+sealed class _Refresh {
+  const _Refresh();
+}
+
+final class _Refreshed extends _Refresh {
+  const _Refreshed();
+}
+
+/// The server refused the refresh token: the session is over.
+final class _Rejected extends _Refresh {
+  const _Rejected();
+}
+
+/// The refresh did not get an answer about the token (offline, 5xx).
+final class _Failed extends _Refresh {
+  const _Failed(this.error);
+
+  final AppException error;
+}
 
 final dioProvider = Provider<Dio>((ref) {
   final options = BaseOptions(
