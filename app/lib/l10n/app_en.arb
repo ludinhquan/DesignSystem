@@ -1,0 +1,25 @@
+{
+  "@@locale": "en",
+
+  "languageName": "English",
+  "@languageName": { "description": "This language's own name, shown in the language switch." },
+
+  "homeTitle": "Home",
+  "@homeTitle": { "description": "Home screen app bar title." },
+  "homeWelcome": "Welcome to {appName}!",
+  "@homeWelcome": {
+    "description": "Greeting on the home screen.",
+    "placeholders": {
+      "appName": { "type": "String", "example": "Acme" }
+    }
+  },
+  "homeLanguage": "Language",
+  "@homeLanguage": { "description": "Label of the language switch." },
+
+  "dsLoading": "Loading",
+  "@dsLoading": { "description": "Design system: spinner label for screen readers." },
+  "dsErrorTitle": "Something went wrong",
+  "@dsErrorTitle": { "description": "Design system: default error view title." },
+  "dsRetry": "Retry",
+  "@dsRetry": { "description": "Design system: default retry button." }
+}

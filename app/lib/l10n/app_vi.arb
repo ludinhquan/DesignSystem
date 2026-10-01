@@ -1,0 +1,13 @@
+{
+  "@@locale": "vi",
+
+  "languageName": "Tiếng Việt",
+
+  "homeTitle": "Trang chủ",
+  "homeWelcome": "Chào mừng bạn đến với {appName}!",
+  "homeLanguage": "Ngôn ngữ",
+
+  "dsLoading": "Đang tải",
+  "dsErrorTitle": "Đã có lỗi xảy ra",
+  "dsRetry": "Thử lại"
+}

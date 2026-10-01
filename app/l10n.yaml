@@ -1,0 +1,10 @@
+# gen-l10n (built into the flutter tool; no build_runner).
+# Regenerate with `flutter gen-l10n` (also runs on `flutter pub get`/`run`/`test`).
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-dir: lib/l10n/gen
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false
+required-resource-attributes: true
+format: true
