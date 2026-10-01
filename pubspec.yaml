@@ -1,0 +1,13 @@
+name: workspace
+description: Pub workspace root. Members are the one app and the one design-system package.
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+workspace:
+  - app
+  - packages/ds
+
+dev_dependencies:
+  flutter_lints: ^6.0.0

@@ -1,4 +1,4 @@
-# Flutter / Dart monorepo (pub workspaces + Melos)
+# Flutter / Dart pub workspace (app + packages/ds)
 
 # Dart / pub
 .dart_tool/
@@ -8,7 +8,6 @@
 build/
 coverage/
 doc/api/
-# Melos may create these when linking local packages
 pubspec_overrides.yaml
 
 # Flutter tool
