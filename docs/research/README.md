@@ -8,6 +8,7 @@ This page is the senior-design read of two research reports. It turns them into 
 - [v1-critique.md](v1-critique.md): critique of the first published system (rendered at phone size) and the "Ink" proposal.
 - [art-directions.md](art-directions.md): case studies of distinctive finance and award-winning apps, money typography, depth, motion, and three art directions (Ledger, Instrument, Pebble).
 - [icons.md](icons.md): icon set comparison (Phosphor, Solar, Hugeicons, Lucide, Fluent, SF Symbols licensing), Fluent Emoji 3D for fun moments, animation options, sizing rules, and picks for Ink and Pebble.
+- [cozy-icons.md](cozy-icons.md): hand-drawn and chibi icon options (Doodle Icons, Rough.js, perfect-freehand, Streamline, OpenMoji), the illustration route for cosy moments with IP cautions, and a Café palette.
 
 Values marked **UNVERIFIED** in the reports are not published by Apple. Measure them from the iOS 26 UI kit at https://developer.apple.com/design/resources/ before locking them in.
 
