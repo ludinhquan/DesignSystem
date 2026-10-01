@@ -1,4 +1,0 @@
-# Generated code: collapse in diffs/PR reviews (edit tokens/*.json instead).
-*.g.dart linguist-generated=true
-# Golden images
-*.png binary
