@@ -7,6 +7,7 @@ This page is the senior-design read of two research reports. It turns them into 
 - [premium-design-system-practice.md](premium-design-system-practice.md): token architecture, reference systems (Linear, Stripe, Airbnb, Polaris, Material 3), premium practices, component priorities, tooling.
 - [v1-critique.md](v1-critique.md): critique of the first published system (rendered at phone size) and the "Ink" proposal.
 - [art-directions.md](art-directions.md): case studies of distinctive finance and award-winning apps, money typography, depth, motion, and three art directions (Ledger, Instrument, Pebble).
+- [icons.md](icons.md): icon set comparison (Phosphor, Solar, Hugeicons, Lucide, Fluent, SF Symbols licensing), Fluent Emoji 3D for fun moments, animation options, sizing rules, and picks for Ink and Pebble.
 
 Values marked **UNVERIFIED** in the reports are not published by Apple. Measure them from the iOS 26 UI kit at https://developer.apple.com/design/resources/ before locking them in.
 
