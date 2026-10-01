@@ -1,0 +1,21 @@
+name: ds_foundation
+description: >-
+  Theme layer of the design system: ThemeExtensions, AppTheme.light()/dark()
+  and BuildContext accessors built from ds_tokens.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  ds_tokens: ^0.1.0
+  flutter:
+    sdk: flutter
+  material_ui: ^1.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
