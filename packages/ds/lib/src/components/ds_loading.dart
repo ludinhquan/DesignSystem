@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../l10n/ds_localizations.dart';
 import '../theme/ds_tokens.dart';
 import '../tokens/semantic.dart';
 
@@ -7,7 +8,8 @@ import '../tokens/semantic.dart';
 class DsLoading extends StatelessWidget {
   const DsLoading({this.label, super.key});
 
-  /// Shown under the spinner and announced to screen readers.
+  /// Shown under the spinner and announced to screen readers. Without it,
+  /// only [DsLocalizations.loading] is announced.
   final String? label;
 
   @override
@@ -21,7 +23,7 @@ class DsLoading extends StatelessWidget {
             dimension: DsSize.controlMd,
             child: CircularProgressIndicator(
               strokeWidth: DsSize.focusRing,
-              semanticsLabel: label ?? 'Loading',
+              semanticsLabel: label ?? DsLocalizations.of(context).loading,
             ),
           ),
           if (label != null) ...[

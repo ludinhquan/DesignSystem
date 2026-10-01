@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../l10n/ds_localizations.dart';
 import '../theme/ds_tokens.dart';
 import '../tokens/semantic.dart';
 
@@ -33,7 +34,7 @@ class DsButton extends StatelessWidget {
     this.icon,
     this.loading = false,
     this.semanticLabel,
-    this.loadingLabel = 'Loading',
+    this.loadingLabel,
     super.key,
   });
 
@@ -47,8 +48,8 @@ class DsButton extends StatelessWidget {
   /// Overrides what screen readers announce instead of [label].
   final String? semanticLabel;
 
-  /// Announced while [loading]. Pass a localized string.
-  final String loadingLabel;
+  /// Announced while [loading]. Defaults to [DsLocalizations.loading].
+  final String? loadingLabel;
 
   bool get _enabled => onPressed != null && !loading;
 
@@ -151,7 +152,9 @@ class DsButton extends StatelessWidget {
       button: true,
       enabled: _enabled,
       label: semanticLabel ?? label,
-      value: loading ? loadingLabel : null,
+      value: loading
+          ? loadingLabel ?? DsLocalizations.of(context).loading
+          : null,
       excludeSemantics: true,
       onTap: _enabled ? onPressed : null,
       child: TextButton(

@@ -3,12 +3,14 @@
 import 'package:flutter/widget_previews.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../l10n/ds_localizations.dart';
 import '../theme/ds_theme.dart';
 import '../theme/ds_tokens.dart';
 import 'ds_button.dart';
 
 /// Light theme wrapper. The previewer's own shell is built on the in-SDK
-/// Material library, so the material_ui [Theme] is provided here.
+/// Material library, so the material_ui [Theme] and the English
+/// [DsLocalizations] are provided here.
 Widget dsLightPreview(Widget child) => _wrap(DsTheme.light(), child);
 
 /// Dark theme wrapper.
@@ -17,11 +19,15 @@ Widget dsDarkPreview(Widget child) => _wrap(DsTheme.dark(), child);
 Widget _wrap(ThemeData theme, Widget child) => Theme(
   data: theme,
   child: Builder(
-    builder: (context) => Material(
-      color: theme.colorScheme.surface,
-      child: Padding(
-        padding: EdgeInsetsDirectional.all(context.ds.spacing.md),
-        child: Center(child: child),
+    builder: (context) => Localizations.override(
+      context: context,
+      delegates: const [DsLocalizations.englishDelegate],
+      child: Material(
+        color: theme.colorScheme.surface,
+        child: Padding(
+          padding: EdgeInsetsDirectional.all(context.ds.spacing.md),
+          child: Center(child: child),
+        ),
       ),
     ),
   ),

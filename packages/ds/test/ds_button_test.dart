@@ -1,4 +1,5 @@
 import 'package:ds/ds.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -77,11 +78,76 @@ void main() {
     expect(a.copyWith(textMuted: b.textMuted).textMuted, b.textMuted);
   });
 
-  testWidgets('DsErrorView retry calls back', (tester) async {
+  testWidgets('DsErrorView shows the given message and retries', (
+    tester,
+  ) async {
     var retries = 0;
-    await tester.pumpDs(DsErrorView('boom', onRetry: () => retries++));
-    expect(find.text('boom'), findsOneWidget);
+    await tester.pumpDs(
+      DsErrorView(message: 'No connection', onRetry: () => retries++),
+    );
+    expect(find.text('Something went wrong'), findsOneWidget);
+    expect(find.text('No connection'), findsOneWidget);
     await tester.tap(find.text('Retry'));
     expect(retries, 1);
   });
+
+  testWidgets('default strings come from DsLocalizations', (tester) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpDs(
+      Column(
+        children: [
+          DsButton(label: 'Save', loading: true, onPressed: () {}),
+          const Expanded(
+            child: DsErrorView(message: 'm', onRetry: _noop),
+          ),
+        ],
+      ),
+      localizationsDelegates: const [_PseudoDelegate()],
+    );
+    expect(
+      tester.getSemantics(find.byType(DsButton).first),
+      matchesSemantics(
+        label: 'Save',
+        value: '[loading]',
+        isButton: true,
+        hasEnabledState: true,
+      ),
+    );
+    expect(find.text('[error]'), findsOneWidget);
+    expect(find.text('[retry]'), findsOneWidget);
+    handle.dispose();
+  });
+
+  testWidgets('a missing DsLocalizations delegate fails loudly in debug', (
+    tester,
+  ) async {
+    await tester.pumpDs(
+      const DsErrorView(message: 'm'),
+      localizationsDelegates: const [],
+    );
+    expect(tester.takeException(), isAssertionError);
+  });
+}
+
+void _noop() {}
+
+class _Pseudo extends DsLocalizations {
+  const _Pseudo();
+  @override
+  String get loading => '[loading]';
+  @override
+  String get errorTitle => '[error]';
+  @override
+  String get retry => '[retry]';
+}
+
+class _PseudoDelegate extends LocalizationsDelegate<DsLocalizations> {
+  const _PseudoDelegate();
+  @override
+  bool isSupported(Locale locale) => true;
+  @override
+  Future<DsLocalizations> load(Locale locale) =>
+      SynchronousFuture(const _Pseudo());
+  @override
+  bool shouldReload(_PseudoDelegate old) => false;
 }
