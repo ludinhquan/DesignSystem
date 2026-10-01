@@ -5,6 +5,8 @@ This page is the senior-design read of two research reports. It turns them into 
 
 - [apple-hig-foundations.md](apple-hig-foundations.md): Apple HIG specs for iOS 26/27 (type, color, layout, Liquid Glass, motion, haptics, components, accessibility). Mostly verified against developer.apple.com.
 - [premium-design-system-practice.md](premium-design-system-practice.md): token architecture, reference systems (Linear, Stripe, Airbnb, Polaris, Material 3), premium practices, component priorities, tooling.
+- [v1-critique.md](v1-critique.md): critique of the first published system (rendered at phone size) and the "Ink" proposal.
+- [art-directions.md](art-directions.md): case studies of distinctive finance and award-winning apps, money typography, depth, motion, and three art directions (Ledger, Instrument, Pebble).
 
 Values marked **UNVERIFIED** in the reports are not published by Apple. Measure them from the iOS 26 UI kit at https://developer.apple.com/design/resources/ before locking them in.
 
