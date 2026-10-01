@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Keep in sync with README.md and CLAUDE.md.
+  FLUTTER_VERSION: 3.47.5
+
+jobs:
+  verify:
+    name: Format, analyze, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies (whole workspace, one lockfile)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Check generated localizations are up to date
+        working-directory: app
+        run: |
+          flutter gen-l10n
+          git diff --exit-code -- lib/l10n/gen
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test packages/ds (unit, widget, golden)
+        working-directory: packages/ds
+        run: flutter test
+
+      - name: Test app
+        working-directory: app
+        run: flutter test
+
+      - name: Upload golden failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failures
+          path: packages/**/test/**/failures/
+          if-no-files-found: ignore
