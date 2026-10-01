@@ -1,0 +1,101 @@
+{
+  "$description": "Tier 2 - semantic colour tokens for the dark theme. Must define exactly the same keys as the other theme files.",
+  "color": {
+    "$type": "color",
+    "background": {
+      "$value": "{color.slate.950}",
+      "$description": "App/page background behind all surfaces."
+    },
+    "surface": {
+      "$value": "{color.slate.900}"
+    },
+    "surfaceRaised": {
+      "$value": "{color.slate.800}",
+      "$description": "Cards, sheets and other elevated containers."
+    },
+    "surfaceSunken": {
+      "$value": "{color.slate.950}"
+    },
+    "primary": {
+      "$value": "{color.blue.400}"
+    },
+    "onPrimary": {
+      "$value": "{color.slate.950}"
+    },
+    "primaryContainer": {
+      "$value": "{color.blue.900}"
+    },
+    "onPrimaryContainer": {
+      "$value": "{color.blue.100}"
+    },
+    "secondary": {
+      "$value": "{color.slate.300}"
+    },
+    "onSecondary": {
+      "$value": "{color.slate.900}"
+    },
+    "text": {
+      "primary": {
+        "$value": "{color.slate.50}"
+      },
+      "secondary": {
+        "$value": "{color.slate.400}",
+        "$description": "Supporting text; must keep >= 4.5:1 contrast on surface."
+      },
+      "disabled": {
+        "$value": "{color.slate.600}"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{color.slate.700}"
+      },
+      "strong": {
+        "$value": "{color.slate.600}"
+      },
+      "focus": {
+        "$value": "{color.blue.400}",
+        "$description": "Focus ring colour for keyboard navigation."
+      }
+    },
+    "success": {
+      "$value": "{color.green.300}"
+    },
+    "onSuccess": {
+      "$value": "{color.green.900}"
+    },
+    "warning": {
+      "$value": "{color.amber.300}"
+    },
+    "onWarning": {
+      "$value": "{color.amber.900}"
+    },
+    "danger": {
+      "$value": "{color.red.300}"
+    },
+    "onDanger": {
+      "$value": "{color.red.900}"
+    },
+    "disabled": {
+      "background": {
+        "$value": "{color.slate.800}"
+      },
+      "foreground": {
+        "$value": "{color.slate.500}"
+      }
+    },
+    "state": {
+      "hover": {
+        "$value": "{color.alpha.white8}",
+        "$description": "Overlay painted on interactive elements while hovered."
+      },
+      "pressed": {
+        "$value": "{color.alpha.white12}",
+        "$description": "Overlay painted on interactive elements while pressed."
+      },
+      "focus": {
+        "$value": "{color.alpha.white12}"
+      }
+    }
+  }
+}
