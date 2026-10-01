@@ -104,6 +104,48 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageName;
 
+  /// Login screen heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to {appName}'**
+  String loginTitle(String appName);
+
+  /// Email field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmail;
+
+  /// Password field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPassword;
+
+  /// Login button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get loginSubmit;
+
+  /// Validation error for an empty email.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get loginEmailRequired;
+
+  /// Validation error for an empty password.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get loginPasswordRequired;
+
+  /// Shown on the login screen when no backend is configured.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo mode: any email works. The password \"wrong\" shows an error.'**
+  String get loginDemoHint;
+
   /// Home screen app bar title.
   ///
   /// In en, this message translates to:
@@ -113,14 +155,68 @@ abstract class AppLocalizations {
   /// Greeting on the home screen.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to {appName}!'**
-  String homeWelcome(String appName);
+  /// **'Welcome to {appName}, {name}!'**
+  String homeWelcome(String appName, String name);
+
+  /// Per-user counter, reset on logout.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{You have not tapped the button yet} =1{You tapped the button once} other{You tapped the button {count} times}}'**
+  String homeTapCount(int count);
+
+  /// Button that increments the counter.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap'**
+  String get homeTap;
 
   /// Label of the language switch.
   ///
   /// In en, this message translates to:
   /// **'Language'**
   String get homeLanguage;
+
+  /// Logout action.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logout;
+
+  /// NetworkException.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Check your network and try again.'**
+  String get errorNetwork;
+
+  /// UnauthorizedException outside the login screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please sign in again.'**
+  String get errorSessionExpired;
+
+  /// UnauthorizedException on the login screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email or password.'**
+  String get errorInvalidCredentials;
+
+  /// ServerException (5xx).
+  ///
+  /// In en, this message translates to:
+  /// **'The server is having trouble. Please try again later.'**
+  String get errorServer;
+
+  /// RequestException (other 4xx).
+  ///
+  /// In en, this message translates to:
+  /// **'The request could not be completed.'**
+  String get errorRequest;
+
+  /// UnknownException or any other error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorUnknown;
 
   /// Design system: spinner label for screen readers.
   ///

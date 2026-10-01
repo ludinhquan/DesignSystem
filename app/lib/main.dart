@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'config/env.dart';
+import 'core/http.dart';
 import 'core/storage.dart';
 
 /// Composition root: the only place that wires vendors and overrides.
@@ -15,6 +16,8 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
 
   final app = ProviderScope(
+    // The app's only retry policy; Dio has no retry interceptor.
+    retry: retryPolicy,
     overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
     child: const App(),
   );

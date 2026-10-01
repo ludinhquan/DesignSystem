@@ -4,17 +4,58 @@
   "languageName": "English",
   "@languageName": { "description": "This language's own name, shown in the language switch." },
 
+  "loginTitle": "Sign in to {appName}",
+  "@loginTitle": {
+    "description": "Login screen heading.",
+    "placeholders": { "appName": { "type": "String", "example": "Acme" } }
+  },
+  "loginEmail": "Email",
+  "@loginEmail": { "description": "Email field label." },
+  "loginPassword": "Password",
+  "@loginPassword": { "description": "Password field label." },
+  "loginSubmit": "Sign in",
+  "@loginSubmit": { "description": "Login button." },
+  "loginEmailRequired": "Enter your email",
+  "@loginEmailRequired": { "description": "Validation error for an empty email." },
+  "loginPasswordRequired": "Enter your password",
+  "@loginPasswordRequired": { "description": "Validation error for an empty password." },
+  "loginDemoHint": "Demo mode: any email works. The password \"wrong\" shows an error.",
+  "@loginDemoHint": { "description": "Shown on the login screen when no backend is configured." },
+
   "homeTitle": "Home",
   "@homeTitle": { "description": "Home screen app bar title." },
-  "homeWelcome": "Welcome to {appName}!",
+  "homeWelcome": "Welcome to {appName}, {name}!",
   "@homeWelcome": {
     "description": "Greeting on the home screen.",
     "placeholders": {
-      "appName": { "type": "String", "example": "Acme" }
+      "appName": { "type": "String", "example": "Acme" },
+      "name": { "type": "String", "example": "Lan" }
     }
   },
+  "homeTapCount": "{count, plural, =0{You have not tapped the button yet} =1{You tapped the button once} other{You tapped the button {count} times}}",
+  "@homeTapCount": {
+    "description": "Per-user counter, reset on logout.",
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeTap": "Tap",
+  "@homeTap": { "description": "Button that increments the counter." },
   "homeLanguage": "Language",
   "@homeLanguage": { "description": "Label of the language switch." },
+  "logout": "Log out",
+  "@logout": { "description": "Logout action." },
+
+  "errorNetwork": "No connection. Check your network and try again.",
+  "@errorNetwork": { "description": "NetworkException." },
+  "errorSessionExpired": "Your session has expired. Please sign in again.",
+  "@errorSessionExpired": { "description": "UnauthorizedException outside the login screen." },
+  "errorInvalidCredentials": "Wrong email or password.",
+  "@errorInvalidCredentials": { "description": "UnauthorizedException on the login screen." },
+  "errorServer": "The server is having trouble. Please try again later.",
+  "@errorServer": { "description": "ServerException (5xx)." },
+  "errorRequest": "The request could not be completed.",
+  "@errorRequest": { "description": "RequestException (other 4xx)." },
+  "errorUnknown": "Something went wrong. Please try again.",
+  "@errorUnknown": { "description": "UnknownException or any other error." },
 
   "dsLoading": "Loading",
   "@dsLoading": { "description": "Design system: spinner label for screen readers." },

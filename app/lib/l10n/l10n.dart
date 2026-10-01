@@ -1,9 +1,11 @@
 import 'package:ds/ds.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show ProviderException;
 import 'package:material_ui/material_ui.dart';
 
 import '../core/analytics.dart';
+import '../core/http.dart';
 import '../core/storage.dart';
 import 'gen/app_localizations.dart';
 
@@ -58,6 +60,19 @@ class _AppDsLocalizations extends DsLocalizations {
 
   @override
   String get retry => _l10n.dsRetry;
+}
+
+extension ErrorMessages on AppLocalizations {
+  /// The user-facing text for any error. Never shows `toString()`.
+  String errorMessage(Object error) => switch (error) {
+    ProviderException(:final exception) => errorMessage(exception),
+    NetworkException() => errorNetwork,
+    UnauthorizedException() => errorSessionExpired,
+    ServerException() => errorServer,
+    RequestException() => errorRequest,
+    UnknownException() => errorUnknown,
+    _ => errorUnknown,
+  };
 }
 
 /// The chosen app language; `null` follows the device. Saved in

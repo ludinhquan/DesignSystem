@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app/core/http.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:ds/ds.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -92,6 +93,27 @@ void main() {
     expect(
       [en.loading, en.errorTitle, en.retry],
       ['Loading', 'Something went wrong', 'Retry'],
+    );
+  });
+
+  testWidgets('every AppException has its own localized message', (
+    tester,
+  ) async {
+    final l10n = AppLocalizations.of(await pumpIn(tester, const Locale('vi')));
+    expect(l10n.errorMessage(const NetworkException()), l10n.errorNetwork);
+    expect(
+      l10n.errorMessage(const UnauthorizedException()),
+      l10n.errorSessionExpired,
+    );
+    expect(l10n.errorMessage(const ServerException(500)), l10n.errorServer);
+    expect(l10n.errorMessage(const RequestException(400)), l10n.errorRequest);
+    expect(
+      l10n.errorMessage(UnknownException(StateError('x'))),
+      l10n.errorUnknown,
+    );
+    expect(
+      l10n.errorMessage(StateError('not an AppException')),
+      l10n.errorUnknown,
     );
   });
 }
