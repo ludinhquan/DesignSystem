@@ -92,7 +92,7 @@ void main() {
     final en = DsLocalizations.of(await pumpIn(tester, const Locale('en')));
     expect(
       [en.loading, en.errorTitle, en.retry],
-      ['Loading', 'Something went wrong', 'Retry'],
+      ['Loading', 'Something went wrong', 'Try again'],
     );
   });
 

@@ -1,10 +1,6 @@
 import 'package:ds/ds.dart';
-import 'package:flutter/painting.dart';
 
 import '../brand.dart';
 
-const brandA = Brand(
-  id: 'brand_a',
-  appName: 'Acme',
-  ds: DsBrand(primary: Color(0xFF2563EB), radius: DsRadiusScale.r3),
-);
+/// Pebble: the wallet, drawn in the Pebble design system.
+final brandA = Brand(id: 'brand_a', appName: 'Pebble', ds: pebble);

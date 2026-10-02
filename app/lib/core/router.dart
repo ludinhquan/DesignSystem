@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/auth_routes.dart';
 import '../features/auth/data/session.dart';
 import '../features/auth/data/session_controller.dart';
-import '../features/home/home_routes.dart';
+import '../features/profile/profile_routes.dart';
+import '../features/wallet/wallet_routes.dart';
+import 'shell.dart';
 
 /// Assembles every feature's routes and guards them with the session.
 final routerProvider = Provider<GoRouter>((ref) {
@@ -15,10 +17,28 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(sessionProvider, (_, next) => session.value = next);
 
   final router = GoRouter(
-    initialLocation: HomePaths.home,
+    initialLocation: WalletPaths.home,
     refreshListenable: session,
-    redirect: (_, state) => authRedirect(session.value, state.uri),
-    routes: [...authRoutes, ...homeRoutes],
+    redirect: (_, state) => authRedirect(
+      session.value,
+      state.uri,
+      keepTarget: !ref.read(sessionProvider.notifier).loggedOutByUser,
+    ),
+    routes: [
+      ...authRoutes,
+      // One branch per tab, in tab order; the shell draws the tab bar.
+      StatefulShellRoute.indexedStack(
+        builder: (_, _, shell) => AppShell(shell: shell),
+        branches: [
+          StatefulShellBranch(routes: walletHomeRoutes),
+          StatefulShellBranch(routes: walletCardsRoutes),
+          StatefulShellBranch(routes: walletActivityRoutes),
+          StatefulShellBranch(routes: profileRoutes),
+        ],
+      ),
+      // Pushed screens cover the tab bar.
+      ...walletRoutes,
+    ],
   );
   ref.onDispose(() {
     router.dispose();
@@ -30,9 +50,14 @@ final routerProvider = Provider<GoRouter>((ref) {
 /// Where to send the user, or `null` to stay. Pure, so it is unit-tested.
 ///
 /// * Session still restoring: `/splash?from=<location>`.
-/// * Logged out: `/login?from=<location>` (no `from` for home).
+/// * Logged out: `/login?from=<location>` (no `from` for home, nor after the
+///   person logged out themselves: [keepTarget] false).
 /// * Logged in on `/login` or `/splash`: back to `from`, else home.
-String? authRedirect(AsyncValue<Session?> session, Uri location) {
+String? authRedirect(
+  AsyncValue<Session?> session,
+  Uri location, {
+  bool keepTarget = true,
+}) {
   final path = location.path;
   final from = location.queryParameters['from'];
   final atAuthPage = path == AuthPaths.login || path == AuthPaths.splash;
@@ -46,17 +71,18 @@ String? authRedirect(AsyncValue<Session?> session, Uri location) {
   // A failed restore counts as logged out.
   if (session.value == null) {
     if (path == AuthPaths.login) return null;
+    if (!keepTarget) return AuthPaths.login;
     return AuthPaths.loginFrom(atAuthPage ? from : _target(location));
   }
 
-  if (atAuthPage) return _safe(from) ?? HomePaths.home;
+  if (atAuthPage) return _safe(from) ?? WalletPaths.home;
   return null;
 }
 
 /// The location to come back to, or `null` for home.
 String? _target(Uri location) {
   final target = location.toString();
-  return target == HomePaths.home ? null : target;
+  return target == WalletPaths.home ? null : target;
 }
 
 /// Only same-app paths, never an auth page or another host (`//evil.com`).

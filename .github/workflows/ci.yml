@@ -34,6 +34,10 @@ jobs:
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
 
+      - name: Check generated design tokens are up to date
+        working-directory: packages/ds
+        run: dart run tool/gen_tokens.dart --check
+
       - name: Check generated localizations are up to date
         working-directory: app
         run: |

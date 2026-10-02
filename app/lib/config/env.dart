@@ -10,6 +10,10 @@ abstract final class Env {
   /// Backend base URL. Empty selects the in-memory fakes (no backend yet).
   static const String apiUrl = String.fromEnvironment('API_URL');
 
+  /// Brand id, used when the build has no native flavor (web, `flutter
+  /// test`). A native flavor wins.
+  static const String brand = String.fromEnvironment('BRAND');
+
   /// Sentry DSN. Empty disables crash reporting.
   static const String sentryDsn = String.fromEnvironment('SENTRY_DSN');
 

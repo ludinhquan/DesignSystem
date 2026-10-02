@@ -1,0 +1,11 @@
+{
+  "source": "Hand-written from the original blue/slate DS palette.",
+  "fields": {
+    "yellow": "amber",
+    "red": "rose",
+    "blue": "blue",
+    "green": "teal",
+    "purple": "violet",
+    "graphite": "slate"
+  }
+}

@@ -2,14 +2,13 @@ import 'package:material_ui/material_ui.dart';
 
 import '../l10n/ds_localizations.dart';
 import '../theme/ds_tokens.dart';
-import '../tokens/semantic.dart';
 
-/// A centered progress indicator with an optional [label].
+/// A centred progress indicator with an optional [label].
 class DsLoading extends StatelessWidget {
   const DsLoading({this.label, super.key});
 
-  /// Shown under the spinner and announced to screen readers. Without it,
-  /// only [DsLocalizations.loading] is announced.
+  /// Shown under the spinner and announced. Without it, only
+  /// [DsLocalizations.loading] is announced.
   final String? label;
 
   @override
@@ -20,19 +19,19 @@ class DsLoading extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox.square(
-            dimension: DsSize.controlMd,
+            dimension: ds.size.iconNav,
             child: CircularProgressIndicator(
-              strokeWidth: DsSize.focusRing,
+              strokeWidth: 2.5,
+              color: ds.colors.text2,
               semanticsLabel: label ?? DsLocalizations.of(context).loading,
             ),
           ),
           if (label != null) ...[
-            SizedBox(height: ds.spacing.sm),
+            SizedBox(height: ds.spacing.s3),
             ExcludeSemantics(
               child: Text(
                 label!,
-                style: Theme.of(context).textTheme.bodyMedium
-                    ?.copyWith(color: ds.textMuted),
+                style: ds.text.subhead.copyWith(color: ds.colors.text2),
               ),
             ),
           ],

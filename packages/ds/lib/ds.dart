@@ -1,13 +1,44 @@
-/// The design system: tokens, theme and components.
+/// The design system: a semantic token contract, the systems that fill it
+/// (Pebble, Classic) and Ds* components that read only the contract.
 library;
 
+export 'src/components/ds_account_card.dart';
+export 'src/components/ds_amount_field.dart';
 export 'src/components/ds_button.dart';
 export 'src/components/ds_card.dart';
+export 'src/components/ds_card_stack.dart';
+export 'src/components/ds_chip.dart';
 export 'src/components/ds_error_view.dart';
+export 'src/components/ds_icon_button.dart';
+export 'src/components/ds_icon_tile.dart';
+export 'src/components/ds_list_item.dart';
+export 'src/components/ds_list_section.dart';
 export 'src/components/ds_loading.dart';
+export 'src/components/ds_money.dart';
+export 'src/components/ds_monogram.dart';
+export 'src/components/ds_navigation_bar.dart';
+export 'src/components/ds_segmented_control.dart';
+export 'src/components/ds_sheet.dart';
+export 'src/components/ds_tab_bar.dart';
+export 'src/components/ds_tap_to_pay.dart';
+export 'src/components/ds_text_field.dart';
+export 'src/components/ds_toggle.dart';
+export 'src/foundation/ds_colors.dart';
+export 'src/foundation/ds_emoji.dart';
+export 'src/foundation/ds_icons.dart';
+export 'src/foundation/ds_metrics.dart';
+export 'src/foundation/ds_motion.dart';
+export 'src/foundation/ds_shadows.dart';
+export 'src/foundation/ds_system.dart';
+export 'src/foundation/ds_type.dart';
 export 'src/l10n/ds_localizations.dart';
-export 'src/theme/ds_brand.dart';
+export 'src/primitives/ds_animated_size.dart';
+export 'src/primitives/ds_box.dart';
+export 'src/primitives/ds_glyph.dart';
+export 'src/primitives/ds_ground.dart';
+export 'src/primitives/ds_haptics.dart';
+export 'src/primitives/ds_pressable.dart';
+export 'src/systems/classic/classic.dart';
+export 'src/systems/pebble/pebble.dart';
 export 'src/theme/ds_theme.dart';
 export 'src/theme/ds_tokens.dart';
-export 'src/tokens/primitives.dart';
-export 'src/tokens/semantic.dart';

@@ -19,6 +19,37 @@ abstract class DsLocalizations {
   /// Default retry button label.
   String get retry;
 
+  /// Close button of a sheet.
+  String get close;
+
+  /// Announced for a masked balance.
+  String get hiddenAmount;
+
+  /// How an amount reads aloud. [amount] is already grouped ("65.000");
+  /// [negative] / [positive] say whether a sign is shown.
+  String amountSemantics(
+    String amount, {
+    required bool negative,
+    required bool positive,
+  });
+
+  /// An account card: institution, name, balance (spoken) and last digits.
+  String cardSemantics({
+    required String name,
+    required String balance,
+    String? institution,
+    String? last4,
+  });
+
+  /// AmountField source line ("Từ Chi tiêu hằng ngày").
+  String amountFrom(String account);
+
+  /// AmountField available line; [amount] is formatted ("12.450.000 ₫").
+  String amountAvailable(String amount);
+
+  /// AmountField error when the amount exceeds the available balance.
+  String get amountOverBalance;
+
   /// Debug builds assert that a delegate is installed, so a missing
   /// translation fails tests instead of showing English. Release builds fall
   /// back to English.
@@ -49,6 +80,41 @@ class _DsLocalizationsEn extends DsLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get hiddenAmount => 'Balance hidden';
+
+  @override
+  String amountSemantics(
+    String amount, {
+    required bool negative,
+    required bool positive,
+  }) => '${negative ? 'minus ' : (positive ? 'plus ' : '')}$amount dong';
+
+  @override
+  String cardSemantics({
+    required String name,
+    required String balance,
+    String? institution,
+    String? last4,
+  }) => [
+    ?institution,
+    name,
+    balance,
+    if (last4 != null) 'card ending $last4',
+  ].join(', ');
+
+  @override
+  String amountFrom(String account) => 'From $account';
+
+  @override
+  String amountAvailable(String amount) => 'Available $amount';
+
+  @override
+  String get amountOverBalance => 'More than the available balance';
 }
 
 class _EnglishDelegate extends LocalizationsDelegate<DsLocalizations> {

@@ -20,12 +20,17 @@ final sessionProvider = AsyncNotifierProvider<SessionController, Session?>(
 class SessionController extends AsyncNotifier<Session?> {
   AuthRepository get _repo => ref.read(authRepositoryProvider);
 
+  /// The person chose to log out (as opposed to a session that expired).
+  /// The router then sends them to plain `/login`, not back to where they
+  /// were: the next person to sign in should start at home.
+  bool loggedOutByUser = false;
+
   @override
   Future<Session?> build() async {
     final sub = ref
         .watch(sessionExpiryProvider)
         .stream
-        .listen((_) => unawaited(logout()));
+        .listen((_) => unawaited(logout(byUser: false)));
     ref.onDispose(sub.cancel);
     try {
       return await _repo.restore();
@@ -39,6 +44,7 @@ class SessionController extends AsyncNotifier<Session?> {
   /// does not move while the login screen shows the error.
   Future<void> login({required String email, required String password}) async {
     final session = await _repo.login(email: email, password: password);
+    loggedOutByUser = false;
     ref.read(analyticsProvider)
       ..identify(session.userId)
       ..track(Events.login);
@@ -46,8 +52,10 @@ class SessionController extends AsyncNotifier<Session?> {
   }
 
   /// Clears tokens and analytics identity, then sets `AsyncData(null)`.
-  /// The state is cleared even if clearing storage fails.
-  Future<void> logout() async {
+  /// The state is cleared even if clearing storage fails. [byUser] is false
+  /// when the server ended the session.
+  Future<void> logout({bool byUser = true}) async {
+    loggedOutByUser = byUser;
     try {
       await _repo.logout();
     } finally {
