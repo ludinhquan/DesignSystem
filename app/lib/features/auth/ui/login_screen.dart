@@ -18,10 +18,11 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _submitting = false;
+  String? _emailError;
+  String? _passwordError;
   Object? _error;
 
   @override
@@ -31,8 +32,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  /// Validates on submit, not on every keystroke.
+  bool _validate() {
+    final l10n = context.l10n;
+    setState(() {
+      _emailError = _email.text.trim().isEmpty ? l10n.loginEmailRequired : null;
+      _passwordError = _password.text.isEmpty
+          ? l10n.loginPasswordRequired
+          : null;
+    });
+    return _emailError == null && _passwordError == null;
+  }
+
   Future<void> _submit() async {
-    if (_submitting || !_formKey.currentState!.validate()) return;
+    if (_submitting) return;
+    if (!_validate()) {
+      DsHaptics.error(context);
+      return;
+    }
     setState(() {
       _submitting = true;
       _error = null;
@@ -52,93 +69,106 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final ds = context.ds;
-    final theme = Theme.of(context);
+    final c = ds.colors;
     final appName = ref.watch(brandProvider).appName;
     final error = switch (_error) {
       null => null,
       UnauthorizedException() => l10n.errorInvalidCredentials,
       final e => l10n.errorMessage(e),
     };
+    final gutter = ds.spacing.gutterFor(MediaQuery.sizeOf(context).width);
 
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsetsDirectional.all(ds.spacing.s6),
+            padding: EdgeInsetsDirectional.symmetric(
+              horizontal: gutter,
+              vertical: ds.spacing.s6,
+            ),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
-              child: Form(
-                key: _formKey,
-                child: AutofillGroup(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+              child: AutofillGroup(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // No logo yet: the brand name in the display face.
+                    Text(
+                      appName,
+                      style: ds.text.titleScreen.copyWith(color: c.text1),
+                    ),
+                    SizedBox(height: ds.spacing.s1),
+                    Text(
+                      l10n.loginTitle(appName),
+                      style: ds.text.subhead.copyWith(color: c.text2),
+                    ),
+                    if (!Env.hasBackend) ...[
+                      SizedBox(height: ds.spacing.s1),
                       Text(
-                        l10n.loginTitle(appName),
-                        style: theme.textTheme.headlineSmall,
-                      ),
-                      if (!Env.hasBackend) ...[
-                        SizedBox(height: ds.spacing.s1),
-                        Text(
-                          l10n.loginDemoHint,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: ds.colors.text2,
-                          ),
-                        ),
-                      ],
-                      SizedBox(height: ds.spacing.s6),
-                      TextFormField(
-                        key: const Key('login.email'),
-                        controller: _email,
-                        enabled: !_submitting,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        autofillHints: const [AutofillHints.email],
-                        decoration: InputDecoration(labelText: l10n.loginEmail),
-                        validator: (v) => (v == null || v.trim().isEmpty)
-                            ? l10n.loginEmailRequired
-                            : null,
-                      ),
-                      SizedBox(height: ds.spacing.s4),
-                      TextFormField(
-                        key: const Key('login.password'),
-                        controller: _password,
-                        enabled: !_submitting,
-                        obscureText: true,
-                        textInputAction: TextInputAction.done,
-                        autofillHints: const [AutofillHints.password],
-                        decoration: InputDecoration(
-                          labelText: l10n.loginPassword,
-                        ),
-                        validator: (v) => (v == null || v.isEmpty)
-                            ? l10n.loginPasswordRequired
-                            : null,
-                        onFieldSubmitted: (_) => _submit(),
-                      ),
-                      if (error != null) ...[
-                        SizedBox(height: ds.spacing.s4),
-                        Semantics(
-                          liveRegion: true,
-                          child: Text(
-                            error,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.error,
-                            ),
-                          ),
-                        ),
-                      ],
-                      SizedBox(height: ds.spacing.s6),
-                      DsButton(
-                        key: const Key('login.submit'),
-                        label: l10n.loginSubmit,
-                        loading: _submitting,
-                        variant: DsButtonVariant.prominent,
-                        size: DsButtonSize.lg,
-                        block: true,
-                        onPressed: _submit,
+                        l10n.loginDemoHint,
+                        style: ds.text.footnote.copyWith(color: c.text2),
                       ),
                     ],
-                  ),
+                    SizedBox(height: ds.spacing.s8),
+                    DsTextField(
+                      inputKey: const Key('login.email'),
+                      label: l10n.loginEmail,
+                      placeholder: l10n.loginEmailPlaceholder,
+                      controller: _email,
+                      enabled: !_submitting,
+                      error: _emailError,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      autofillHints: const [AutofillHints.email],
+                    ),
+                    SizedBox(height: ds.spacing.s4),
+                    DsTextField(
+                      inputKey: const Key('login.password'),
+                      label: l10n.loginPassword,
+                      controller: _password,
+                      enabled: !_submitting,
+                      error: _passwordError,
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.password],
+                      onSubmitted: (_) => _submit(),
+                    ),
+                    if (error != null) ...[
+                      SizedBox(height: ds.spacing.s4),
+                      Semantics(
+                        liveRegion: true,
+                        child: Row(
+                          children: [
+                            DsGlyph(
+                              ds.icons.warning,
+                              weight: DsGlyphWeight.fill,
+                              size: 16,
+                              color: c.negative,
+                            ),
+                            SizedBox(width: ds.spacing.s2),
+                            Expanded(
+                              child: Text(
+                                error,
+                                style: ds.text.footnote.copyWith(
+                                  color: c.negative,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: ds.spacing.s6),
+                    DsButton(
+                      key: const Key('login.submit'),
+                      label: l10n.loginSubmit,
+                      loading: _submitting,
+                      variant: DsButtonVariant.prominent,
+                      size: DsButtonSize.lg,
+                      block: true,
+                      onPressed: _submit,
+                    ),
+                  ],
                 ),
               ),
             ),

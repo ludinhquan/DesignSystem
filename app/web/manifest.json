@@ -1,11 +1,11 @@
 {
-    "name": "Acme",
-    "short_name": "Acme",
+    "name": "Pebble",
+    "short_name": "Pebble",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Acme",
+    "description": "Pebble",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -2,7 +2,7 @@ import 'package:app/core/http.dart';
 import 'package:app/core/storage.dart';
 import 'package:app/features/auth/data/session.dart';
 import 'package:app/features/auth/data/session_controller.dart';
-import 'package:app/features/home/ui/tap_count_controller.dart';
+import 'package:app/features/wallet/data/wallet_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,7 +24,7 @@ void main() {
   const lan = Session(
     userId: 'fake-lan@example.com',
     email: 'lan@example.com',
-    name: 'lan',
+    name: 'Lan',
   );
 
   test('restore: no stored token -> logged out', () async {
@@ -99,14 +99,16 @@ void main() {
     await c
         .read(sessionProvider.notifier)
         .login(email: 'lan@example.com', password: 'x');
-    final sub = c.listen(tapCountProvider, (_, _) {});
-    c.read(tapCountProvider.notifier)
-      ..increment()
-      ..increment();
-    expect(sub.read(), 2);
+    final hidden = c.listen(balanceHiddenProvider, (_, _) {});
+    final wallet = c.listen(walletProvider, (_, _) {});
+    c.read(balanceHiddenProvider.notifier).toggle();
+    expect(hidden.read(), isTrue);
+    expect((await c.read(walletProvider.future)).accounts, isNotEmpty);
 
     await c.read(sessionProvider.notifier).logout();
-    expect(c.read(tapCountProvider), 0);
+    expect(c.read(balanceHiddenProvider), isFalse);
+    expect((await c.read(walletProvider.future)).accounts, isEmpty);
+    wallet.close();
   });
 
   test('a rejected token refresh logs the user out', () async {

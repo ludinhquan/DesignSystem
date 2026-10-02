@@ -108,6 +108,7 @@ extension ErrorMessages on AppLocalizations {
     NetworkException() => errorNetwork,
     UnauthorizedException() => errorSessionExpired,
     ServerException() => errorServer,
+    RequestException(code: 'insufficient_funds') => errorInsufficientFunds,
     RequestException() => errorRequest,
     UnknownException() => errorUnknown,
     _ => errorUnknown,

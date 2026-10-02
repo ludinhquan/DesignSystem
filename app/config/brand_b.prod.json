@@ -1,5 +1,5 @@
 {
-  "BRAND": "brand_a",
+  "BRAND": "brand_b",
   "ENV": "prod",
   "API_URL": "https://api.example.com",
   "SENTRY_DSN": ""

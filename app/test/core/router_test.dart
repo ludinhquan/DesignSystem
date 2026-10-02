@@ -44,6 +44,13 @@ void main() {
       );
     });
 
+    test('after the person logs out, no from: the next user starts home', () {
+      expect(
+        authRedirect(loggedOut, Uri.parse('/profile'), keepTarget: false),
+        '/login',
+      );
+    });
+
     test('/login stays', () {
       expect(go(loggedOut, '/login?from=%2Forders'), isNull);
     });

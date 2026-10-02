@@ -126,9 +126,12 @@ class FakeAuthRepository implements AuthRepository {
     return _session(tokens.access.substring(_prefix.length));
   }
 
-  static Session _session(String email) => Session(
-    userId: 'fake-$email',
-    email: email,
-    name: email.split('@').first,
-  );
+  /// "lan@example.com" → Lan.
+  static Session _session(String email) {
+    final local = email.split('@').first;
+    final name = local.isEmpty
+        ? local
+        : local[0].toUpperCase() + local.substring(1);
+    return Session(userId: 'fake-$email', email: email, name: name);
+  }
 }

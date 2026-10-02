@@ -98,7 +98,7 @@ abstract class AppLocalizations {
     Locale('vi'),
   ];
 
-  /// This language's own name, shown in the language switch.
+  /// This language's own name, shown in the language list.
   ///
   /// In en, this message translates to:
   /// **'English'**
@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'Email'**
   String get loginEmail;
 
+  /// Email field example.
+  ///
+  /// In en, this message translates to:
+  /// **'lan@example.com'**
+  String get loginEmailPlaceholder;
+
   /// Password field label.
   ///
   /// In en, this message translates to:
@@ -128,16 +134,16 @@ abstract class AppLocalizations {
   /// **'Sign in'**
   String get loginSubmit;
 
-  /// Validation error for an empty email.
+  /// Validation: empty email.
   ///
   /// In en, this message translates to:
-  /// **'Enter your email'**
+  /// **'Enter your email.'**
   String get loginEmailRequired;
 
-  /// Validation error for an empty password.
+  /// Validation: empty password.
   ///
   /// In en, this message translates to:
-  /// **'Enter your password'**
+  /// **'Enter your password.'**
   String get loginPasswordRequired;
 
   /// Shown on the login screen when no backend is configured.
@@ -146,41 +152,377 @@ abstract class AppLocalizations {
   /// **'Demo mode: any email works. The password \"wrong\" shows an error.'**
   String get loginDemoHint;
 
-  /// Home screen app bar title.
+  /// Tab bar.
   ///
   /// In en, this message translates to:
   /// **'Home'**
-  String get homeTitle;
+  String get tabHome;
 
-  /// Greeting on the home screen.
+  /// Tab bar.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to {appName}, {name}!'**
-  String homeWelcome(String appName, String name);
+  /// **'Cards'**
+  String get tabCards;
 
-  /// Per-user counter, reset on logout.
+  /// Tab bar.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{You have not tapped the button yet} =1{You tapped the button once} other{You tapped the button {count} times}}'**
-  String homeTapCount(int count);
+  /// **'Activity'**
+  String get tabActivity;
 
-  /// Button that increments the counter.
+  /// Tab bar.
   ///
   /// In en, this message translates to:
-  /// **'Tap'**
-  String get homeTap;
+  /// **'Profile'**
+  String get tabProfile;
 
-  /// Label of the language switch.
+  /// Home greeting before noon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// Home greeting 12–18h.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// Home greeting after 18h.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// Eyebrow above the total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total balance'**
+  String get homeTotalBalance;
+
+  /// Eye button when the balance is hidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Show balance'**
+  String get homeShowBalance;
+
+  /// Eye button when the balance is shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide balance'**
+  String get homeHideBalance;
+
+  /// Delta chip.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} this month'**
+  String homeDelta(String amount);
+
+  /// Search button.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// Bell button and sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// Empty notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up'**
+  String get notificationsEmptyTitle;
+
+  /// Empty notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll tell you when something happens.'**
+  String get notificationsEmptyMessage;
+
+  /// Quick action and sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get actionTransfer;
+
+  /// Quick action and sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up'**
+  String get actionTopUp;
+
+  /// Quick action.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR'**
+  String get actionScan;
+
+  /// Quick action.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get actionBills;
+
+  /// Sheet for an unfinished feature.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoonTitle;
+
+  /// Sheet for an unfinished feature.
+  ///
+  /// In en, this message translates to:
+  /// **'{feature} isn\'t ready yet.'**
+  String comingSoonMessage(String feature);
+
+  /// Section and screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activityTitle;
+
+  /// Section link.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// Activity filter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// Activity filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent'**
+  String get filterSpent;
+
+  /// Activity filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get filterReceived;
+
+  /// Empty activity.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get activityEmptyTitle;
+
+  /// Empty activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first transaction will show up here.'**
+  String get activityEmptyMessage;
+
+  /// Row time for yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// Row subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{category} · {time}'**
+  String rowSubtitle(String category, String time);
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee'**
+  String get catCoffee;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get catFood;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get catTransport;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get catShopping;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get catBills;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get catUtilities;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get catHealth;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get catIncome;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts'**
+  String get catGift;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get catTransfer;
+
+  /// Category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Top-up'**
+  String get catTopUp;
+
+  /// Cards screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'My cards'**
+  String get cardsTitle;
+
+  /// Pay screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get payTitle;
+
+  /// Tap to pay, ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the back of your phone near the reader'**
+  String get payReady;
+
+  /// Tap to pay, done.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paySuccess;
+
+  /// Demo payment button.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {amount}'**
+  String payTry(String amount);
+
+  /// After a payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to cards'**
+  String get payBack;
+
+  /// Profile screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// Settings group header.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettings;
+
+  /// Language row.
   ///
   /// In en, this message translates to:
   /// **'Language'**
-  String get homeLanguage;
+  String get settingsLanguage;
 
-  /// Logout action.
+  /// Hide balances toggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide balances'**
+  String get settingsHideBalance;
+
+  /// Footer under settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances show as dots until you reveal them.'**
+  String get settingsHideBalanceFooter;
+
+  /// Logout button.
   ///
   /// In en, this message translates to:
   /// **'Log out'**
   String get logout;
+
+  /// Transfer field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient'**
+  String get transferRecipient;
+
+  /// Transfer field example.
+  ///
+  /// In en, this message translates to:
+  /// **'Hoa Chu'**
+  String get transferRecipientPlaceholder;
+
+  /// Validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter who receives the money.'**
+  String get transferRecipientRequired;
+
+  /// AmountField label.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amountLabel;
+
+  /// Transfer confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Send {amount}'**
+  String transferSend(String amount);
+
+  /// Transfer in progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get transferSending;
+
+  /// Top-up confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up {amount}'**
+  String topUpConfirm(String amount);
+
+  /// The linked bank a top-up comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'Techcombank •• 4821'**
+  String get topUpSource;
+
+  /// Source account picker.
+  ///
+  /// In en, this message translates to:
+  /// **'From {account}'**
+  String fromAccount(String account);
 
   /// NetworkException.
   ///
@@ -188,34 +530,40 @@ abstract class AppLocalizations {
   /// **'No connection. Check your network and try again.'**
   String get errorNetwork;
 
-  /// UnauthorizedException outside the login screen.
+  /// UnauthorizedException outside login.
   ///
   /// In en, this message translates to:
-  /// **'Your session has expired. Please sign in again.'**
+  /// **'Your session has expired. Sign in again.'**
   String get errorSessionExpired;
 
-  /// UnauthorizedException on the login screen.
+  /// UnauthorizedException on login.
   ///
   /// In en, this message translates to:
   /// **'Wrong email or password.'**
   String get errorInvalidCredentials;
 
-  /// ServerException (5xx).
+  /// ServerException.
   ///
   /// In en, this message translates to:
-  /// **'The server is having trouble. Please try again later.'**
+  /// **'The server is having trouble. Try again in a moment.'**
   String get errorServer;
 
-  /// RequestException (other 4xx).
+  /// RequestException.
   ///
   /// In en, this message translates to:
-  /// **'The request could not be completed.'**
+  /// **'This request could not be completed.'**
   String get errorRequest;
+
+  /// RequestException insufficient_funds.
+  ///
+  /// In en, this message translates to:
+  /// **'More than the available balance.'**
+  String get errorInsufficientFunds;
 
   /// UnknownException or any other error.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong. Please try again.'**
+  /// **'Something went wrong. Try again.'**
   String get errorUnknown;
 
   /// Design system: close button of a sheet.
@@ -224,7 +572,7 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get dsClose;
 
-  /// Design system: announced for a masked balance.
+  /// Design system: a masked balance read aloud.
   ///
   /// In en, this message translates to:
   /// **'Balance hidden'**
@@ -248,13 +596,13 @@ abstract class AppLocalizations {
   /// **'plus {amount} dong'**
   String dsAmountPositive(String amount);
 
-  /// Design system: last digits of a card, read aloud.
+  /// Design system: card digits read aloud.
   ///
   /// In en, this message translates to:
   /// **'card ending {last4}'**
   String dsCardEnding(String last4);
 
-  /// Design system: AmountField source account.
+  /// Design system: AmountField source.
   ///
   /// In en, this message translates to:
   /// **'From {account}'**
@@ -272,22 +620,22 @@ abstract class AppLocalizations {
   /// **'More than the available balance'**
   String get dsAmountOverBalance;
 
-  /// Design system: spinner label for screen readers.
+  /// Design system: spinner label.
   ///
   /// In en, this message translates to:
   /// **'Loading'**
   String get dsLoading;
 
-  /// Design system: default error view title.
+  /// Design system: error view title.
   ///
   /// In en, this message translates to:
   /// **'Something went wrong'**
   String get dsErrorTitle;
 
-  /// Design system: default retry button.
+  /// Design system: retry button.
   ///
   /// In en, this message translates to:
-  /// **'Retry'**
+  /// **'Try again'**
   String get dsRetry;
 }
 

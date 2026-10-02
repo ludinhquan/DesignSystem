@@ -12,15 +12,15 @@ void main() {
   testWidgets('validates empty fields with localized messages', (tester) async {
     await pumpApp(tester);
     await tester.tap(find.byKey(const Key('login.submit')));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
-    expect(find.text('Enter your email'), findsOneWidget);
-    expect(find.text('Enter your password'), findsOneWidget);
+    expect(find.text('Enter your email.'), findsOneWidget);
+    expect(find.text('Enter your password.'), findsOneWidget);
   });
 
   testWidgets('shows the button loading while logging in', (tester) async {
     final container = await pumpApp(tester);
-    expect(find.text('Sign in to Acme'), findsOneWidget);
+    expect(find.text('Sign in to Pebble'), findsOneWidget);
 
     await tester.enterText(
       find.byKey(const Key('login.email')),
@@ -45,13 +45,13 @@ void main() {
     await logIn(tester, password: 'wrong');
 
     expect(find.text('Wrong email or password.'), findsOneWidget);
-    expect(find.text('Sign in to Acme'), findsOneWidget);
+    expect(find.text('Sign in to Pebble'), findsOneWidget);
     expect(submit(tester).loading, isFalse);
   });
 
   testWidgets('is translated to Vietnamese', (tester) async {
     await pumpApp(tester, prefs: {'app.locale': 'vi'});
-    expect(find.text('Đăng nhập vào Acme'), findsOneWidget);
+    expect(find.text('Đăng nhập vào Pebble'), findsOneWidget);
 
     await logIn(tester, password: 'wrong');
     expect(find.text('Email hoặc mật khẩu không đúng.'), findsOneWidget);
