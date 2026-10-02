@@ -197,6 +197,42 @@ void main() {
     });
   });
 
+  testWidgets('controls keep their own semantics node beside plain text', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpDs(
+      ListView(
+        children: [
+          Row(
+            children: [
+              const Text('Total balance'),
+              DsIconButton(
+                icon: pebble.icons.eye,
+                label: 'Hide balance',
+                onPressed: () {},
+              ),
+              const DsChip(label: '+1.000 ₫'),
+            ],
+          ),
+        ],
+      ),
+    );
+    // Exactly the button's label: not merged with the text or the chip.
+    expect(find.bySemanticsLabel('Hide balance'), findsOneWidget);
+    expect(
+      tester.getSemantics(find.byType(DsIconButton)),
+      matchesSemantics(
+        label: 'Hide balance',
+        isButton: true,
+        hasEnabledState: true,
+        isEnabled: true,
+        hasTapAction: true,
+      ),
+    );
+    handle.dispose();
+  });
+
   testWidgets('DsToggle flips through onChanged and exposes its state', (
     tester,
   ) async {
@@ -286,6 +322,30 @@ void main() {
       expect(v.value, 250000);
       await tester.tap(find.text('+100K'));
       expect(v.value, 350000);
+    });
+
+    testWidgets('screen readers reach the input where the amount is', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
+      await tester.pumpDs(
+        SizedBox(
+          width: 360,
+          child: DsAmountField(
+            value: 250000,
+            onChanged: (_) {},
+            label: 'Amount',
+            sourceField: DsField.yellow,
+            sourceName: 'Chi tiêu',
+          ),
+        ),
+      );
+      final node = tester.getSemantics(find.bySemanticsLabel('Amount'));
+      expect(node.flagsCollection.isTextField, isTrue);
+      expect(node.value, '250000');
+      // As large as the drawn amount, not a 1px stub.
+      expect(node.rect.height, greaterThan(40));
+      handle.dispose();
     });
 
     testWidgets('over the balance warns once, with an error haptic', (

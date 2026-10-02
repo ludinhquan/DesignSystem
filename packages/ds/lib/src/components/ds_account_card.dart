@@ -168,7 +168,9 @@ class DsAccountCard extends StatelessWidget {
     }
 
     return Semantics(
+      container: true,
       button: onTap != null,
+      onTap: onTap,
       label: l10n.cardSemantics(
         institution: data.institution,
         name: data.name,

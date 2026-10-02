@@ -123,11 +123,18 @@ class DsIconTile extends StatelessWidget {
 
     final name = label ?? semanticLabel;
     if (onTap == null) {
-      return Semantics(label: name, excludeSemantics: true, child: body(false));
+      return Semantics(
+        container: true,
+        label: name,
+        excludeSemantics: true,
+        child: body(false),
+      );
     }
     return Semantics(
+      container: true,
       button: true,
       label: name,
+      onTap: onTap,
       excludeSemantics: true,
       child: DsPressable(
         onTap: onTap,

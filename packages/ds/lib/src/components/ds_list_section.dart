@@ -68,6 +68,7 @@ class DsListSection extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Semantics(
+                      container: true,
                       header: true,
                       child: Text(
                         header!,
@@ -106,6 +107,7 @@ class DsListSection extends StatelessWidget {
                 bottom: ds.spacing.s2,
               ),
               child: Semantics(
+                container: true,
                 header: true,
                 child: Text(
                   header!,

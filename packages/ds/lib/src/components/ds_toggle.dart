@@ -52,6 +52,7 @@ class _DsToggleState extends State<DsToggle> {
     final on = widget.value;
 
     return Semantics(
+      container: true,
       toggled: on,
       enabled: widget.onChanged != null,
       label: widget.semanticLabel,

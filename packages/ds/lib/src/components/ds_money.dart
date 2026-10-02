@@ -127,6 +127,7 @@ class DsMoney extends StatelessWidget {
     );
 
     return Semantics(
+      container: true,
       label: spoken,
       excludeSemantics: true,
       child: hidden ? _Masked(style: textStyle, child: body) : body,

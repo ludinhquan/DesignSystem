@@ -226,9 +226,12 @@ class _DsListItemState extends State<DsListItem> {
       child: row,
     );
 
-    if (widget.onTap == null) return MergeSemantics(child: animated);
+    if (widget.onTap == null) {
+      return Semantics(container: true, child: MergeSemantics(child: animated));
+    }
     return MergeSemantics(
       child: Semantics(
+        container: true,
         button: true,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,

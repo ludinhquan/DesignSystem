@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:material_ui/material_ui.dart';
 
 import '../foundation/ds_icons.dart';
+import '../primitives/ds_animated_size.dart';
 import '../primitives/ds_box.dart';
 import '../primitives/ds_glyph.dart';
 import '../primitives/ds_haptics.dart';
@@ -43,30 +44,31 @@ class DsTabBar extends StatelessWidget {
     final ds = context.ds;
     final c = ds.colors;
     final shape = ds.shape(ds.radius.full);
-    final reduce = context.dsReduceMotion;
-    final spring = ds.motion.snappy;
     final glass = !MediaQuery.highContrastOf(context);
     final bottom = math.max(26.0, MediaQuery.paddingOf(context).bottom);
+
+    void select(int i) {
+      if (i == index) return;
+      DsHaptics.selection(context);
+      onChanged(i);
+    }
 
     final row = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (final (i, item) in items.indexed)
           Semantics(
+            container: true,
             button: true,
             selected: i == index,
             label: item.label,
+            onTap: () => select(i),
             excludeSemantics: true,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () {
-                if (i == index) return;
-                DsHaptics.selection(context);
-                onChanged(i);
-              },
-              child: AnimatedSize(
-                duration: reduce ? Duration.zero : spring.duration,
-                curve: spring.curve,
+              onTap: () => select(i),
+              child: DsAnimatedSize(
+                spring: ds.motion.snappy,
                 child: i == index
                     ? DsBox(
                         shape: shape,
@@ -119,25 +121,30 @@ class DsTabBar extends StatelessWidget {
       ],
     );
 
-    return Padding(
-      padding: EdgeInsetsDirectional.only(
-        start: ds.spacing.s4,
-        end: ds.spacing.s4,
-        bottom: bottom,
-      ),
-      child: DsBox(
-        shape: shape,
-        shadow: ds.shadows.glass,
-        child: ClipPath(
-          clipper: ShapeBorderClipper(shape: shape),
-          child: BackdropFilter(
-            enabled: glass,
-            filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: ColoredBox(
-              color: glass ? c.glass : c.surface,
-              child: Padding(
-                padding: EdgeInsetsDirectional.all(ds.spacing.s2),
-                child: row,
+    // Often placed in a Stack outside any Material: provide the default text
+    // style a Material would, so labels never fall back to the debug style.
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.bodyMedium!,
+      child: Padding(
+        padding: EdgeInsetsDirectional.only(
+          start: ds.spacing.s4,
+          end: ds.spacing.s4,
+          bottom: bottom,
+        ),
+        child: DsBox(
+          shape: shape,
+          shadow: ds.shadows.glass,
+          child: ClipPath(
+            clipper: ShapeBorderClipper(shape: shape),
+            child: BackdropFilter(
+              enabled: glass,
+              filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: ColoredBox(
+                color: glass ? c.glass : c.surface,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.all(ds.spacing.s2),
+                  child: row,
+                ),
               ),
             ),
           ),

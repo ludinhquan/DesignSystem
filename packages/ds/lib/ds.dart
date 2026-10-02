@@ -32,6 +32,7 @@ export 'src/foundation/ds_shadows.dart';
 export 'src/foundation/ds_system.dart';
 export 'src/foundation/ds_type.dart';
 export 'src/l10n/ds_localizations.dart';
+export 'src/primitives/ds_animated_size.dart';
 export 'src/primitives/ds_box.dart';
 export 'src/primitives/ds_glyph.dart';
 export 'src/primitives/ds_ground.dart';

@@ -1,21 +1,24 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../l10n/ds_localizations.dart';
+import '../primitives/ds_animated_size.dart';
 import '../primitives/ds_box.dart';
 import '../primitives/ds_ground.dart';
 import '../theme/ds_tokens.dart';
 import 'ds_icon_button.dart';
 
-/// Shows a [DsSheet] over the dimmed screen. Drag down to dismiss.
+/// Shows the [DsSheet] that [builder] returns over the dimmed screen. Drag
+/// down to dismiss.
 Future<T?> showDsSheet<T>({
   required BuildContext context,
-  required String title,
   required WidgetBuilder builder,
-  WidgetBuilder? footer,
 }) {
   final ds = context.ds;
   return showModalBottomSheet<T>(
     context: context,
+    // Above everything, including a floating tab bar drawn by a shell route
+    // (sheets hide it).
+    useRootNavigator: true,
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: const Color(0x00000000),
@@ -26,12 +29,7 @@ Future<T?> showDsSheet<T>({
       curve: ds.motion.smooth.curve,
       reverseDuration: ds.motion.fadeLong,
     ),
-    builder: (context) => DsSheet(
-      title: title,
-      onClose: () => Navigator.of(context).pop(),
-      footer: footer?.call(context),
-      child: Builder(builder: builder),
-    ),
+    builder: builder,
   );
 }
 
@@ -45,13 +43,19 @@ class DsSheet extends StatelessWidget {
     required this.title,
     required this.child,
     this.onClose,
+    this.closable = true,
     this.footer,
     super.key,
   });
 
   final String title;
   final Widget child;
+
+  /// Defaults to popping the sheet's route.
   final VoidCallback? onClose;
+
+  /// Shows the soft close button on the left.
+  final bool closable;
 
   /// One prominent, full-width `DsButton` that names the action and amount.
   final Widget? footer;
@@ -80,9 +84,7 @@ class DsSheet extends StatelessWidget {
         clip: true,
         child: DsGroundScope(
           ground: DsGround.sheet,
-          child: AnimatedSize(
-            duration: ds.motion.smooth.duration,
-            curve: ds.motion.smooth.curve,
+          child: DsAnimatedSize(
             alignment: Alignment.bottomCenter,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -105,12 +107,13 @@ class DsSheet extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      if (onClose != null)
+                      if (closable)
                         DsIconButton(
                           icon: ds.icons.close,
                           label: DsLocalizations.of(context).close,
                           variant: DsIconButtonVariant.soft,
-                          onPressed: onClose,
+                          onPressed:
+                              onClose ?? () => Navigator.of(context).maybePop(),
                         )
                       else
                         SizedBox(width: ds.size.hitTarget),

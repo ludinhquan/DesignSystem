@@ -65,11 +65,14 @@ class DsChip extends StatelessWidget {
                 DsGlyph(icon!, weight: DsGlyphWeight.bold, size: 14, color: fg),
                 SizedBox(width: ds.spacing.s1),
               ],
-              Text(
-                label,
-                style: ds.text.chip.copyWith(color: fg),
-                maxLines: 1,
-                softWrap: false,
+              Flexible(
+                child: Text(
+                  label,
+                  style: ds.text.chip.copyWith(color: fg),
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -78,20 +81,25 @@ class DsChip extends StatelessWidget {
     );
     if (onPressed == null) {
       return Semantics(
+        container: true,
         label: semanticLabel,
         excludeSemantics: semanticLabel != null,
         child: pill,
       );
     }
+    void tap() {
+      DsHaptics.selection(context);
+      onPressed!();
+    }
+
     return Semantics(
+      container: true,
       button: true,
       label: semanticLabel ?? label,
+      onTap: tap,
       excludeSemantics: true,
       child: DsPressable(
-        onTap: () {
-          DsHaptics.selection(context);
-          onPressed!();
-        },
+        onTap: tap,
         scale: ds.motion.pressScaleTile,
         focusShape: shape,
         builder: (context, _) => SizedBox(

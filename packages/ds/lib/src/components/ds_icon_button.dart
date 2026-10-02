@@ -72,8 +72,10 @@ class DsIconButton extends StatelessWidget {
     };
 
     return Semantics(
+      container: true,
       button: true,
       enabled: onPressed != null,
+      onTap: onPressed,
       label: label,
       excludeSemantics: true,
       child: DsPressable(

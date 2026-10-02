@@ -24,9 +24,9 @@ class DsAmountField extends StatefulWidget {
   const DsAmountField({
     required this.value,
     required this.onChanged,
-    required this.available,
     required this.sourceField,
     required this.sourceName,
+    this.available,
     this.label,
     this.chips = const [100000, 500000, 1000000],
     this.autofocus = false,
@@ -38,8 +38,9 @@ class DsAmountField extends StatefulWidget {
   final int value;
   final ValueChanged<int> onChanged;
 
-  /// The source account's balance.
-  final int available;
+  /// The source account's balance. Null when there is no limit (a top-up
+  /// from a linked bank): no available line, no over-balance warning.
+  final int? available;
   final DsField sourceField;
   final String sourceName;
 
@@ -74,7 +75,8 @@ class _DsAmountFieldState extends State<DsAmountField>
 
   static String _text(int v) => v == 0 ? '' : '$v';
 
-  bool get _over => widget.value > widget.available;
+  bool get _over =>
+      widget.available != null && widget.value > widget.available!;
 
   @override
   void initState() {
@@ -101,7 +103,7 @@ class _DsAmountFieldState extends State<DsAmountField>
         selection: TextSelection.collapsed(offset: _text(widget.value).length),
       );
     }
-    final wasOver = old.value > old.available;
+    final wasOver = old.available != null && old.value > old.available!;
     if (_over && !wasOver) {
       DsHaptics.error(context);
       if (!context.dsReduceMotion) _shake.forward(from: 0);
@@ -177,32 +179,6 @@ class _DsAmountFieldState extends State<DsAmountField>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // The hidden input that drives everything; digits only (no
-          // decimal key: VND has no decimals).
-          SizedBox(
-            height: 1,
-            child: Opacity(
-              opacity: 0,
-              child: Semantics(
-                label: widget.label,
-                child: TextField(
-                  key: widget.inputKey,
-                  controller: _controller,
-                  focusNode: _focus,
-                  autofocus: widget.autofocus,
-                  keyboardType: TextInputType.number,
-                  showCursor: false,
-                  enableInteractiveSelection: false,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(DsAmountField.maxDigits),
-                  ],
-                  decoration: const InputDecoration.collapsed(hintText: null),
-                  onChanged: (t) => widget.onChanged(int.tryParse(t) ?? 0),
-                ),
-              ),
-            ),
-          ),
           if (widget.label != null)
             ExcludeSemantics(
               child: Text(
@@ -210,24 +186,56 @@ class _DsAmountFieldState extends State<DsAmountField>
                 style: ds.text.label.copyWith(color: c.text2),
               ),
             ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              _focus.requestFocus();
-              SystemChannels.textInput.invokeMethod<void>('TextInput.show');
-            },
-            child: AnimatedBuilder(
-              animation: _shake,
-              builder: (context, child) {
-                final t = _shake.value;
-                final dx = math.sin(t * math.pi * 6) * 8 * (1 - t);
-                return Transform.translate(offset: Offset(dx, 0), child: child);
-              },
-              child: SizedBox(
-                height: 64 + ds.spacing.s2,
-                width: double.infinity,
-                child: Center(child: amount),
-              ),
+          SizedBox(
+            height: 64 + ds.spacing.s2,
+            width: double.infinity,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                AnimatedBuilder(
+                  animation: _shake,
+                  builder: (context, child) {
+                    final t = _shake.value;
+                    final dx = math.sin(t * math.pi * 6) * 8 * (1 - t);
+                    return Transform.translate(
+                      offset: Offset(dx, 0),
+                      child: child,
+                    );
+                  },
+                  child: ExcludeSemantics(child: Center(child: amount)),
+                ),
+                // The real input lies over the amount, transparent: taps
+                // focus it, the keyboard is numeric (VND has no decimals),
+                // and screen readers find it where the amount is drawn.
+                Opacity(
+                  opacity: 0,
+                  alwaysIncludeSemantics: true,
+                  child: Semantics(
+                    label: widget.label,
+                    child: TextField(
+                      key: widget.inputKey,
+                      controller: _controller,
+                      focusNode: _focus,
+                      autofocus: widget.autofocus,
+                      keyboardType: TextInputType.number,
+                      showCursor: false,
+                      enableInteractiveSelection: false,
+                      expands: true,
+                      maxLines: null,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(
+                          DsAmountField.maxDigits,
+                        ),
+                      ],
+                      decoration: const InputDecoration.collapsed(
+                        hintText: null,
+                      ),
+                      onChanged: (t) => widget.onChanged(int.tryParse(t) ?? 0),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           if (_over)
@@ -301,13 +309,14 @@ class _DsAmountFieldState extends State<DsAmountField>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(
-                        l10n.amountAvailable(
-                          DsMoneyFormat.format(widget.available),
+                      if (widget.available != null)
+                        Text(
+                          l10n.amountAvailable(
+                            DsMoneyFormat.format(widget.available!),
+                          ),
+                          style: ds.text.footnote.copyWith(color: c.text2),
+                          maxLines: 1,
                         ),
-                        style: ds.text.footnote.copyWith(color: c.text2),
-                        maxLines: 1,
-                      ),
                     ],
                   ),
                 ),

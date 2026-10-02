@@ -113,8 +113,10 @@ class DsButton extends StatelessWidget {
         : DsGlyph(icon!, weight: DsGlyphWeight.bold, color: fg);
 
     return Semantics(
+      container: true,
       button: true,
       enabled: _enabled,
+      onTap: _enabled ? onPressed : null,
       label: semanticLabel ?? label,
       value: loading
           ? loadingLabel ?? DsLocalizations.of(context).loading

@@ -50,11 +50,17 @@ class DsSegmentedControl<T> extends StatelessWidget {
     final spring = ds.motion.snappy;
     final reduce = context.dsReduceMotion;
     final regular = DsTypography.withWeight(ds.text.subhead, 500);
+    void select(int i) {
+      if (i == index) return;
+      DsHaptics.selection(context);
+      onChanged(segments[i].value);
+    }
+
     final bold = DsTypography.withWeight(ds.text.subhead, 600);
 
     return Semantics(
-      label: semanticLabel,
       container: true,
+      label: semanticLabel,
       child: SizedBox(
         height: math.max(height, small ? height : ds.size.hitTarget),
         child: Center(
@@ -89,18 +95,16 @@ class DsSegmentedControl<T> extends StatelessWidget {
                             SizedBox(
                               width: w,
                               child: Semantics(
+                                container: true,
                                 button: true,
                                 selected: i == index,
                                 inMutuallyExclusiveGroup: true,
                                 label: s.label,
+                                onTap: () => select(i),
                                 excludeSemantics: true,
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    if (i == index) return;
-                                    DsHaptics.selection(context);
-                                    onChanged(s.value);
-                                  },
+                                  onTap: () => select(i),
                                   child: Center(
                                     // A hidden bold copy reserves the width,
                                     // so selecting never shifts the label.
