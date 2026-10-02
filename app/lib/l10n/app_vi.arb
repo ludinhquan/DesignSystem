@@ -1,0 +1,31 @@
+{
+  "@@locale": "vi",
+
+  "languageName": "Tiếng Việt",
+
+  "loginTitle": "Đăng nhập vào {appName}",
+  "loginEmail": "Email",
+  "loginPassword": "Mật khẩu",
+  "loginSubmit": "Đăng nhập",
+  "loginEmailRequired": "Vui lòng nhập email",
+  "loginPasswordRequired": "Vui lòng nhập mật khẩu",
+  "loginDemoHint": "Chế độ demo: email nào cũng được. Mật khẩu \"wrong\" sẽ báo lỗi.",
+
+  "homeTitle": "Trang chủ",
+  "homeWelcome": "Chào mừng bạn đến với {appName}, {name}!",
+  "homeTapCount": "{count, plural, =0{Bạn chưa nhấn nút lần nào} other{Bạn đã nhấn nút {count} lần}}",
+  "homeTap": "Nhấn",
+  "homeLanguage": "Ngôn ngữ",
+  "logout": "Đăng xuất",
+
+  "errorNetwork": "Không có kết nối. Vui lòng kiểm tra mạng và thử lại.",
+  "errorSessionExpired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "errorInvalidCredentials": "Email hoặc mật khẩu không đúng.",
+  "errorServer": "Máy chủ đang gặp sự cố. Vui lòng thử lại sau.",
+  "errorRequest": "Không thể thực hiện yêu cầu.",
+  "errorUnknown": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+
+  "dsLoading": "Đang tải",
+  "dsErrorTitle": "Đã có lỗi xảy ra",
+  "dsRetry": "Thử lại"
+}
