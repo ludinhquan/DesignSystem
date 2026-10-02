@@ -64,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsetsDirectional.all(ds.spacing.lg),
+            padding: EdgeInsetsDirectional.all(ds.spacing.s6),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
               child: Form(
@@ -78,15 +78,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         style: theme.textTheme.headlineSmall,
                       ),
                       if (!Env.hasBackend) ...[
-                        SizedBox(height: ds.spacing.xs),
+                        SizedBox(height: ds.spacing.s1),
                         Text(
                           l10n.loginDemoHint,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: ds.textMuted,
+                            color: ds.colors.text2,
                           ),
                         ),
                       ],
-                      SizedBox(height: ds.spacing.lg),
+                      SizedBox(height: ds.spacing.s6),
                       TextFormField(
                         key: const Key('login.email'),
                         controller: _email,
@@ -99,7 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ? l10n.loginEmailRequired
                             : null,
                       ),
-                      SizedBox(height: ds.spacing.md),
+                      SizedBox(height: ds.spacing.s4),
                       TextFormField(
                         key: const Key('login.password'),
                         controller: _password,
@@ -116,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onFieldSubmitted: (_) => _submit(),
                       ),
                       if (error != null) ...[
-                        SizedBox(height: ds.spacing.md),
+                        SizedBox(height: ds.spacing.s4),
                         Semantics(
                           liveRegion: true,
                           child: Text(
@@ -127,12 +127,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ],
-                      SizedBox(height: ds.spacing.lg),
+                      SizedBox(height: ds.spacing.s6),
                       DsButton(
                         key: const Key('login.submit'),
                         label: l10n.loginSubmit,
                         loading: _submitting,
+                        variant: DsButtonVariant.prominent,
                         size: DsButtonSize.lg,
+                        block: true,
                         onPressed: _submit,
                       ),
                     ],

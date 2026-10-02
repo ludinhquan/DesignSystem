@@ -86,6 +86,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorUnknown => 'Something went wrong. Please try again.';
 
   @override
+  String get dsClose => 'Close';
+
+  @override
+  String get dsHiddenAmount => 'Balance hidden';
+
+  @override
+  String dsAmount(String amount) {
+    return '$amount dong';
+  }
+
+  @override
+  String dsAmountNegative(String amount) {
+    return 'minus $amount dong';
+  }
+
+  @override
+  String dsAmountPositive(String amount) {
+    return 'plus $amount dong';
+  }
+
+  @override
+  String dsCardEnding(String last4) {
+    return 'card ending $last4';
+  }
+
+  @override
+  String dsAmountFrom(String account) {
+    return 'From $account';
+  }
+
+  @override
+  String dsAmountAvailable(String amount) {
+    return 'Available $amount';
+  }
+
+  @override
+  String get dsAmountOverBalance => 'More than the available balance';
+
+  @override
   String get dsLoading => 'Loading';
 
   @override

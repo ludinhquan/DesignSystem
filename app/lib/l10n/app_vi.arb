@@ -25,6 +25,15 @@
   "errorRequest": "Không thể thực hiện yêu cầu.",
   "errorUnknown": "Đã có lỗi xảy ra. Vui lòng thử lại.",
 
+  "dsClose": "Đóng",
+  "dsHiddenAmount": "Số dư đã ẩn",
+  "dsAmount": "{amount} đồng",
+  "dsAmountNegative": "âm {amount} đồng",
+  "dsAmountPositive": "cộng {amount} đồng",
+  "dsCardEnding": "thẻ đuôi {last4}",
+  "dsAmountFrom": "Từ {account}",
+  "dsAmountAvailable": "Khả dụng {amount}",
+  "dsAmountOverBalance": "Vượt quá số dư khả dụng",
   "dsLoading": "Đang tải",
   "dsErrorTitle": "Đã có lỗi xảy ra",
   "dsRetry": "Thử lại"

@@ -22,12 +22,12 @@ class HomeScreen extends ConsumerWidget {
     final text = Theme.of(context).textTheme;
     final appName = ref.watch(brandProvider).appName;
     final taps = ref.watch(tapCountProvider);
-    final gap = SizedBox(height: ds.spacing.md);
+    final gap = SizedBox(height: ds.spacing.s4);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.homeTitle)),
       body: ListView(
-        padding: EdgeInsetsDirectional.all(ds.spacing.lg),
+        padding: EdgeInsetsDirectional.all(ds.spacing.s6),
         children: [
           Text(
             l10n.homeWelcome(appName, session.name),
@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           Text(
             session.email,
-            style: text.bodyMedium?.copyWith(color: ds.textMuted),
+            style: text.bodyMedium?.copyWith(color: ds.colors.text2),
           ),
           gap,
           DsCard(
@@ -43,10 +43,10 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(l10n.homeTapCount(taps), style: text.titleMedium),
-                SizedBox(height: ds.spacing.sm),
+                SizedBox(height: ds.spacing.s2),
                 DsButton(
                   label: l10n.homeTap,
-                  icon: Icons.add,
+                  icon: ds.icons.plus,
                   onPressed: ref.read(tapCountProvider.notifier).increment,
                 ),
               ],
@@ -58,7 +58,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(l10n.homeLanguage, style: text.titleMedium),
-                SizedBox(height: ds.spacing.sm),
+                SizedBox(height: ds.spacing.s2),
                 const LanguageSwitch(),
               ],
             ),
@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
           gap,
           DsButton(
             label: l10n.logout,
-            icon: Icons.logout,
+            icon: ds.icons.logout,
             variant: DsButtonVariant.secondary,
             onPressed: ref.read(sessionProvider.notifier).logout,
           ),

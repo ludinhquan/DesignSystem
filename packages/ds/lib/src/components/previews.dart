@@ -3,18 +3,20 @@
 import 'package:flutter/widget_previews.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../foundation/ds_colors.dart';
 import '../l10n/ds_localizations.dart';
+import '../systems/classic/classic.dart';
+import '../systems/pebble/pebble.dart';
 import '../theme/ds_theme.dart';
 import '../theme/ds_tokens.dart';
+import 'ds_account_card.dart';
 import 'ds_button.dart';
 
-/// Light theme wrapper. The previewer's own shell is built on the in-SDK
-/// Material library, so the material_ui [Theme] and the English
-/// [DsLocalizations] are provided here.
-Widget dsLightPreview(Widget child) => _wrap(DsTheme.light(), child);
-
-/// Dark theme wrapper.
-Widget dsDarkPreview(Widget child) => _wrap(DsTheme.dark(), child);
+/// The previewer's shell is built on the in-SDK Material library, so the
+/// material_ui [Theme] and the English [DsLocalizations] are provided here.
+Widget pebbleLight(Widget child) => _wrap(DsTheme.light(pebble), child);
+Widget pebbleDark(Widget child) => _wrap(DsTheme.dark(pebble), child);
+Widget classicLight(Widget child) => _wrap(DsTheme.light(classic), child);
 
 Widget _wrap(ThemeData theme, Widget child) => Theme(
   data: theme,
@@ -22,10 +24,10 @@ Widget _wrap(ThemeData theme, Widget child) => Theme(
     builder: (context) => Localizations.override(
       context: context,
       delegates: const [DsLocalizations.englishDelegate],
-      child: Material(
-        color: theme.colorScheme.surface,
+      child: ColoredBox(
+        color: context.ds.colors.canvas,
         child: Padding(
-          padding: EdgeInsetsDirectional.all(context.ds.spacing.md),
+          padding: EdgeInsetsDirectional.all(context.ds.spacing.s5),
           child: Center(child: child),
         ),
       ),
@@ -33,31 +35,35 @@ Widget _wrap(ThemeData theme, Widget child) => Theme(
   ),
 );
 
-@Preview(group: 'DsButton', name: 'Light', wrapper: dsLightPreview)
+@Preview(group: 'Button', name: 'Pebble light', wrapper: pebbleLight)
 @Preview(
-  group: 'DsButton',
-  name: 'Dark',
-  wrapper: dsDarkPreview,
+  group: 'Button',
+  name: 'Pebble dark',
+  wrapper: pebbleDark,
   brightness: Brightness.dark,
 )
-Widget dsButtonPreview() => Builder(
+@Preview(group: 'Button', name: 'Classic light', wrapper: classicLight)
+Widget buttonPreview() => Builder(
   builder: (context) => Wrap(
-    spacing: context.ds.spacing.sm,
-    runSpacing: context.ds.spacing.sm,
+    spacing: 8,
+    runSpacing: 8,
     children: [
-      DsButton(label: 'Primary', onPressed: () {}),
-      DsButton(
-        label: 'Secondary',
-        variant: DsButtonVariant.secondary,
-        onPressed: () {},
-      ),
-      DsButton(
-        label: 'Ghost',
-        variant: DsButtonVariant.ghost,
-        onPressed: () {},
-      ),
-      const DsButton(label: 'Disabled', onPressed: null),
+      for (final v in DsButtonVariant.values)
+        DsButton(label: v.name, variant: v, onPressed: () {}),
       DsButton(label: 'Loading', loading: true, onPressed: () {}),
     ],
+  ),
+);
+
+@Preview(group: 'AccountCard', name: 'Pebble light', wrapper: pebbleLight)
+@Preview(group: 'AccountCard', name: 'Classic light', wrapper: classicLight)
+Widget cardPreview() => const DsAccountCard(
+  data: DsCardData(
+    id: 'daily',
+    field: DsField.yellow,
+    institution: 'Techcombank',
+    name: 'Chi tiêu hằng ngày',
+    balance: 12450000,
+    last4: '4821',
   ),
 );

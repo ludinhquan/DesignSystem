@@ -1,101 +1,93 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../tokens/semantic.dart';
+import '../foundation/ds_colors.dart';
+import '../foundation/ds_icons.dart';
+import '../foundation/ds_metrics.dart';
+import '../foundation/ds_motion.dart';
+import '../foundation/ds_shadows.dart';
+import '../foundation/ds_system.dart';
+import '../foundation/ds_type.dart';
+import '../systems/pebble/pebble.dart';
 
-/// The one design-system [ThemeExtension]: everything that does not fit in
-/// [ColorScheme] or [TextTheme].
+/// The one design-system [ThemeExtension]: a [DsSystem] resolved for one
+/// brightness and platform. Components read only this.
 ///
 /// Read it with `context.ds`.
 @immutable
 class DsTokens extends ThemeExtension<DsTokens> {
-  const DsTokens({
-    required this.spacing,
-    required this.radius,
-    required this.success,
-    required this.onSuccess,
-    required this.warning,
-    required this.onWarning,
-    required this.textMuted,
-    required this.border,
-  });
+  DsTokens(this.system, this.brightness, {TargetPlatform? platform})
+    : colors = brightness == Brightness.light
+          ? system.tokens.colorsLight
+          : system.tokens.colorsDark,
+      shadows = brightness == Brightness.light
+          ? system.tokens.shadowsLight
+          : system.tokens.shadowsDark,
+      text = DsTypography(
+        system.tokens.type,
+        system.fonts,
+        platform ?? defaultTargetPlatform,
+      );
 
-  /// Light-mode tokens with radii derived from [baseRadius].
-  factory DsTokens.light({required double baseRadius}) => DsTokens(
-    spacing: DsSpacing.standard,
-    radius: DsRadii.fromBase(baseRadius),
-    success: DsLightColors.success,
-    onSuccess: DsLightColors.onSuccess,
-    warning: DsLightColors.warning,
-    onWarning: DsLightColors.onWarning,
-    textMuted: DsLightColors.textMuted,
-    border: DsLightColors.border,
+  const DsTokens._(
+    this.system,
+    this.brightness,
+    this.colors,
+    this.shadows,
+    this.text,
   );
 
-  /// Dark-mode tokens with radii derived from [baseRadius].
-  factory DsTokens.dark({required double baseRadius}) => DsTokens(
-    spacing: DsSpacing.standard,
-    radius: DsRadii.fromBase(baseRadius),
-    success: DsDarkColors.success,
-    onSuccess: DsDarkColors.onSuccess,
-    warning: DsDarkColors.warning,
-    onWarning: DsDarkColors.onWarning,
-    textMuted: DsDarkColors.textMuted,
-    border: DsDarkColors.border,
-  );
+  final DsSystem system;
+  final Brightness brightness;
+  final DsColors colors;
+  final DsShadows shadows;
 
-  final DsSpacing spacing;
-  final DsRadii radius;
-  final Color success;
-  final Color onSuccess;
-  final Color warning;
-  final Color onWarning;
+  /// Every type role resolved to a [TextStyle] (no colour).
+  final DsTypography text;
 
-  /// Secondary text: captions, hints, metadata.
-  final Color textMuted;
+  DsSpacing get spacing => system.tokens.spacing;
+  DsRadii get radius => system.tokens.radii;
+  DsSizes get size => system.tokens.sizes;
+  DsOpacities get opacity => system.tokens.opacity;
+  DsMotion get motion => system.motion;
+  DsIconSet get icons => system.icons;
+  bool get isDark => brightness == Brightness.dark;
 
-  /// Hairline borders and dividers.
-  final Color border;
+  /// A rounded shape in the system's corner geometry.
+  OutlinedBorder shape(double radius, {BorderSide? side}) =>
+      system.shape(BorderRadius.circular(radius), side: side);
 
   @override
-  DsTokens copyWith({
-    DsSpacing? spacing,
-    DsRadii? radius,
-    Color? success,
-    Color? onSuccess,
-    Color? warning,
-    Color? onWarning,
-    Color? textMuted,
-    Color? border,
-  }) => DsTokens(
-    spacing: spacing ?? this.spacing,
-    radius: radius ?? this.radius,
-    success: success ?? this.success,
-    onSuccess: onSuccess ?? this.onSuccess,
-    warning: warning ?? this.warning,
-    onWarning: onWarning ?? this.onWarning,
-    textMuted: textMuted ?? this.textMuted,
-    border: border ?? this.border,
-  );
+  DsTokens copyWith({DsSystem? system, Brightness? brightness}) =>
+      DsTokens(system ?? this.system, brightness ?? this.brightness);
 
+  /// Colours animate between themes; everything else switches halfway.
   @override
   DsTokens lerp(DsTokens? other, double t) {
-    if (other == null) return this;
-    return DsTokens(
-      spacing: spacing.lerp(other.spacing, t),
-      radius: radius.lerp(other.radius, t),
-      success: Color.lerp(success, other.success, t)!,
-      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
-      warning: Color.lerp(warning, other.warning, t)!,
-      onWarning: Color.lerp(onWarning, other.onWarning, t)!,
-      textMuted: Color.lerp(textMuted, other.textMuted, t)!,
-      border: Color.lerp(border, other.border, t)!,
+    if (other == null || identical(this, other)) return this;
+    final near = t < 0.5 ? this : other;
+    return DsTokens._(
+      near.system,
+      near.brightness,
+      colors.lerp(other.colors, t),
+      near.shadows,
+      near.text,
     );
   }
 }
 
-/// `context.ds.spacing.md`, `context.ds.textMuted`, ...
+/// `context.ds.colors.text1`, `context.ds.text.body`, `context.ds.spacing.s4`
 extension DsContext on BuildContext {
-  DsTokens get ds =>
-      Theme.of(this).extension<DsTokens>() ??
-      DsTokens.light(baseRadius: DsRadii.standard.md);
+  DsTokens get ds {
+    final tokens = Theme.of(this).extension<DsTokens>();
+    assert(
+      tokens != null,
+      'No DsTokens in the theme. Use DsTheme.light/dark(system) as the '
+      'MaterialApp theme (in tests and previews: DsTheme.light(pebble)).',
+    );
+    return tokens ?? DsTokens(pebble, Brightness.light);
+  }
+
+  /// Reduce Motion is on: replace movement with short fades.
+  bool get dsReduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
 }

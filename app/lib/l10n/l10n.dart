@@ -60,6 +60,45 @@ class _AppDsLocalizations extends DsLocalizations {
 
   @override
   String get retry => _l10n.dsRetry;
+
+  @override
+  String get close => _l10n.dsClose;
+
+  @override
+  String get hiddenAmount => _l10n.dsHiddenAmount;
+
+  @override
+  String amountSemantics(
+    String amount, {
+    required bool negative,
+    required bool positive,
+  }) => negative
+      ? _l10n.dsAmountNegative(amount)
+      : positive
+      ? _l10n.dsAmountPositive(amount)
+      : _l10n.dsAmount(amount);
+
+  @override
+  String cardSemantics({
+    required String name,
+    required String balance,
+    String? institution,
+    String? last4,
+  }) => [
+    ?institution,
+    name,
+    balance,
+    if (last4 != null) _l10n.dsCardEnding(last4),
+  ].join(', ');
+
+  @override
+  String amountFrom(String account) => _l10n.dsAmountFrom(account);
+
+  @override
+  String amountAvailable(String amount) => _l10n.dsAmountAvailable(amount);
+
+  @override
+  String get amountOverBalance => _l10n.dsAmountOverBalance;
 }
 
 extension ErrorMessages on AppLocalizations {

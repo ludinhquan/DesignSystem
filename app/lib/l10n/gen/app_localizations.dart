@@ -218,6 +218,60 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again.'**
   String get errorUnknown;
 
+  /// Design system: close button of a sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get dsClose;
+
+  /// Design system: announced for a masked balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance hidden'**
+  String get dsHiddenAmount;
+
+  /// Design system: an amount read aloud.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} dong'**
+  String dsAmount(String amount);
+
+  /// Design system: an outflow read aloud.
+  ///
+  /// In en, this message translates to:
+  /// **'minus {amount} dong'**
+  String dsAmountNegative(String amount);
+
+  /// Design system: an inflow read aloud.
+  ///
+  /// In en, this message translates to:
+  /// **'plus {amount} dong'**
+  String dsAmountPositive(String amount);
+
+  /// Design system: last digits of a card, read aloud.
+  ///
+  /// In en, this message translates to:
+  /// **'card ending {last4}'**
+  String dsCardEnding(String last4);
+
+  /// Design system: AmountField source account.
+  ///
+  /// In en, this message translates to:
+  /// **'From {account}'**
+  String dsAmountFrom(String account);
+
+  /// Design system: AmountField available balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available {amount}'**
+  String dsAmountAvailable(String amount);
+
+  /// Design system: AmountField over the balance.
+  ///
+  /// In en, this message translates to:
+  /// **'More than the available balance'**
+  String get dsAmountOverBalance;
+
   /// Design system: spinner label for screen readers.
   ///
   /// In en, this message translates to:

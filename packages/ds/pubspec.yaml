@@ -1,8 +1,9 @@
 name: ds
 description: >-
-  The design system: hand-written tokens, a Material theme built from a
-  DsBrand, and Ds* components. Depends only on Flutter and material_ui.
-version: 0.1.0
+  The design system: a semantic token contract, design systems that fill it
+  (Pebble, Classic; generated from Design System tokens.json files) and Ds*
+  components that read only the contract.
+version: 0.2.0
 publish_to: none
 resolution: workspace
 
@@ -13,7 +14,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  intl: ^0.20.2
   material_ui: ^1.5.0
+  # Pebble's UI icons. Imports flutter/widgets only; fonts are tree-shaken.
+  phosphoricons_flutter: ^1.0.0
 
 dev_dependencies:
   alchemist: ^0.14.0
@@ -21,5 +25,19 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-  # Material icons font, used by components, previews and goldens.
+  # Material icons font: the Classic system's icon set.
   uses-material-design: true
+  fonts:
+    # Variable: opsz 12–96, wdth 75–100, wght 200–800 (default 800, so every
+    # style sets wght explicitly). OFL, licenses/BricolageGrotesque-OFL.txt.
+    - family: BricolageGrotesque
+      fonts:
+        - asset: fonts/BricolageGrotesque.ttf
+    # Android UI face. Variable: opsz 14–32, wght 100–900. OFL.
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter.ttf
+  assets:
+    # Microsoft Fluent Emoji 3D (MIT, licenses/FluentEmoji-MIT.txt).
+    - assets/emoji3d/
+    - licenses/

@@ -57,6 +57,42 @@
   "errorUnknown": "Something went wrong. Please try again.",
   "@errorUnknown": { "description": "UnknownException or any other error." },
 
+  "dsClose": "Close",
+  "@dsClose": { "description": "Design system: close button of a sheet." },
+  "dsHiddenAmount": "Balance hidden",
+  "@dsHiddenAmount": { "description": "Design system: announced for a masked balance." },
+  "dsAmount": "{amount} dong",
+  "@dsAmount": {
+    "description": "Design system: an amount read aloud.",
+    "placeholders": { "amount": { "type": "String", "example": "65.000" } }
+  },
+  "dsAmountNegative": "minus {amount} dong",
+  "@dsAmountNegative": {
+    "description": "Design system: an outflow read aloud.",
+    "placeholders": { "amount": { "type": "String", "example": "65.000" } }
+  },
+  "dsAmountPositive": "plus {amount} dong",
+  "@dsAmountPositive": {
+    "description": "Design system: an inflow read aloud.",
+    "placeholders": { "amount": { "type": "String", "example": "65.000" } }
+  },
+  "dsCardEnding": "card ending {last4}",
+  "@dsCardEnding": {
+    "description": "Design system: last digits of a card, read aloud.",
+    "placeholders": { "last4": { "type": "String", "example": "4821" } }
+  },
+  "dsAmountFrom": "From {account}",
+  "@dsAmountFrom": {
+    "description": "Design system: AmountField source account.",
+    "placeholders": { "account": { "type": "String", "example": "Chi tiêu hằng ngày" } }
+  },
+  "dsAmountAvailable": "Available {amount}",
+  "@dsAmountAvailable": {
+    "description": "Design system: AmountField available balance.",
+    "placeholders": { "amount": { "type": "String", "example": "65.000" } }
+  },
+  "dsAmountOverBalance": "More than the available balance",
+  "@dsAmountOverBalance": { "description": "Design system: AmountField over the balance." },
   "dsLoading": "Loading",
   "@dsLoading": { "description": "Design system: spinner label for screen readers." },
   "dsErrorTitle": "Something went wrong",

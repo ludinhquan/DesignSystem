@@ -18,8 +18,9 @@ class Brand {
   /// Shown in the UI through `{appName}` placeholders, never hard-coded in ARB.
   final String appName;
 
-  /// Design-system inputs: primary color, font, radius.
-  final DsBrand ds;
+  /// The design system this brand is drawn in. Switching a brand to another
+  /// system is this one value.
+  final DsSystem ds;
 
   static Brand fromFlavor(String? flavor) => switch (flavor) {
     // Add one case per brand: 'brand_b' => brandB,

@@ -85,6 +85,45 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorUnknown => 'Đã có lỗi xảy ra. Vui lòng thử lại.';
 
   @override
+  String get dsClose => 'Đóng';
+
+  @override
+  String get dsHiddenAmount => 'Số dư đã ẩn';
+
+  @override
+  String dsAmount(String amount) {
+    return '$amount đồng';
+  }
+
+  @override
+  String dsAmountNegative(String amount) {
+    return 'âm $amount đồng';
+  }
+
+  @override
+  String dsAmountPositive(String amount) {
+    return 'cộng $amount đồng';
+  }
+
+  @override
+  String dsCardEnding(String last4) {
+    return 'thẻ đuôi $last4';
+  }
+
+  @override
+  String dsAmountFrom(String account) {
+    return 'Từ $account';
+  }
+
+  @override
+  String dsAmountAvailable(String amount) {
+    return 'Khả dụng $amount';
+  }
+
+  @override
+  String get dsAmountOverBalance => 'Vượt quá số dư khả dụng';
+
+  @override
   String get dsLoading => 'Đang tải';
 
   @override
